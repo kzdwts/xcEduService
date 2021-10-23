@@ -9,6 +9,7 @@
         <module>../xc-framework-utils</module>
         <module>../xc-framework-model</module>
         <module>../xc-service-api</module>
+        <module>../xc-service-manage-cms</module>
     </modules>
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
