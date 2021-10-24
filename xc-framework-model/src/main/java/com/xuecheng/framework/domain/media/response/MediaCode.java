@@ -26,11 +26,11 @@ public enum MediaCode implements ResultCode {
     int code;
     //提示信息
     @ApiModelProperty(value = "媒资系统操作提示", example = "文件在系统已存在！", required = true)
-    String message;
-    private MediaCode(boolean success,int code, String message){
+    String msg;
+    private MediaCode(boolean success,int code, String msg){
         this.success = success;
         this.code = code;
-        this.message = message;
+        this.msg = MediaCode.this.msg;
     }
     private static final ImmutableMap<Integer, MediaCode> CACHE;
 
@@ -53,7 +53,7 @@ public enum MediaCode implements ResultCode {
     }
 
     @Override
-    public String message() {
-        return message;
+    public String msg() {
+        return msg;
     }
 }

@@ -27,11 +27,11 @@ public enum AuthCode implements ResultCode {
     int code;
     //提示信息
     @ApiModelProperty(value = "操作提示", example = "操作过于频繁！", required = true)
-    String message;
-    private AuthCode(boolean success, int code, String message){
+    String msg;
+    private AuthCode(boolean success, int code, String msg){
         this.success = success;
         this.code = code;
-        this.message = message;
+        this.msg = AuthCode.this.msg;
     }
     private static final ImmutableMap<Integer, AuthCode> CACHE;
 
@@ -54,7 +54,7 @@ public enum AuthCode implements ResultCode {
     }
 
     @Override
-    public String message() {
-        return message;
+    public String msg() {
+        return msg;
     }
 }

@@ -22,12 +22,12 @@ public class ResponseResult implements Response {
     int code = SUCCESS_CODE;
 
     //提示信息
-    String message;
+    String msg;
 
     public ResponseResult(ResultCode resultCode){
         this.success = resultCode.success();
         this.code = resultCode.code();
-        this.message = resultCode.message();
+        this.msg = resultCode.msg();
     }
 
     public static ResponseResult SUCCESS(){

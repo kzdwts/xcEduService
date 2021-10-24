@@ -20,11 +20,11 @@ public enum PortalViewCode implements ResultCode {
     //操作代码
     int code;
     //提示信息
-    String message;
-    private PortalViewCode(boolean success, int code, String message){
+    String msg;
+    private PortalViewCode(boolean success, int code, String msg){
         this.success = success;
         this.code = code;
-        this.message = message;
+        this.msg = PortalViewCode.this.msg;
     }
     private static final ImmutableMap<Integer, PortalViewCode> CACHE;
 
@@ -47,7 +47,7 @@ public enum PortalViewCode implements ResultCode {
     }
 
     @Override
-    public String message() {
-        return message;
+    public String msg() {
+        return msg;
     }
 }

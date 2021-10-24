@@ -20,11 +20,11 @@ public enum CmsCode implements ResultCode {
     //操作代码
     int code;
     //提示信息
-    String message;
-    private CmsCode(boolean success, int code, String message){
+    String msg;
+    private CmsCode(boolean success, int code, String msg){
         this.success = success;
         this.code = code;
-        this.message = message;
+        this.msg = CmsCode.this.msg;
     }
 
     @Override
@@ -38,7 +38,7 @@ public enum CmsCode implements ResultCode {
     }
 
     @Override
-    public String message() {
-        return message;
+    public String msg() {
+        return msg;
     }
 }

@@ -23,11 +23,11 @@ public enum CommonCode implements ResultCode{
     //操作代码
     int code;
     //提示信息
-    String message;
-    private CommonCode(boolean success,int code, String message){
+    String msg;
+    private CommonCode(boolean success,int code, String msg){
         this.success = success;
         this.code = code;
-        this.message = message;
+        this.msg = CommonCode.this.msg;
     }
 
     @Override
@@ -40,8 +40,8 @@ public enum CommonCode implements ResultCode{
     }
 
     @Override
-    public String message() {
-        return message;
+    public String msg() {
+        return msg;
     }
 
 
