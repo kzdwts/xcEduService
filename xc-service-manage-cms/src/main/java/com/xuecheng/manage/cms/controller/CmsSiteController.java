@@ -1,6 +1,6 @@
 package com.xuecheng.manage.cms.controller;
 
-import com.xuecheng.api.CmsSiteControllerApi;
+import com.xuecheng.api.cms.CmsSiteControllerApi;
 import com.xuecheng.framework.domain.cms.CmsSite;
 import com.xuecheng.manage.cms.service.CmsSiteService;
 import org.springframework.beans.factory.annotation.Autowired;

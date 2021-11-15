@@ -2,6 +2,7 @@ package com.xuecheng.manage.cms.service.impl;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
+import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Date;
 
 @Service
 public class CmsPageServiceImpl implements CmsPageService {
@@ -68,5 +71,22 @@ public class CmsPageServiceImpl implements CmsPageService {
         // 返回结果
         QueryResponseResult queryResponseResult = new QueryResponseResult(CommonCode.SUCCESS, queryResult);
         return queryResponseResult;
+    }
+
+    @Override
+    public CmsPageResult add(CmsPage cmsPage) {
+        // 先查询是否已经有了,页面名称、站点、页面path
+        CmsPage existCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
+
+        // 如果没有就新增
+        if(ObjectUtils.isEmpty( existCmsPage)) {
+            // 新增
+            cmsPage.setPageId(null);
+            cmsPage.setPageCreateTime(new Date());
+            cmsPageRepository.save(cmsPage);
+            // 返回成功
+            return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
+        }
+        return new CmsPageResult(CommonCode.FAIL, null);
     }
 }
