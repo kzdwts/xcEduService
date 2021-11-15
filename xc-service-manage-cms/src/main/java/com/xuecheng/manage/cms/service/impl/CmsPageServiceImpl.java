@@ -7,11 +7,11 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.manage.cms.dao.CmsPageRepository;
 import com.xuecheng.manage.cms.service.CmsPageService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 @Service
 public class CmsPageServiceImpl implements CmsPageService {
@@ -29,6 +29,25 @@ public class CmsPageServiceImpl implements CmsPageService {
      */
     @Override
     public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest) {
+        if (ObjectUtils.isEmpty(queryPageRequest)) {
+            // 保证后边的逻辑不会包空指针异常
+            queryPageRequest = new QueryPageRequest();
+        }
+        // 自定义条件
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
+        CmsPage cmsPage = new CmsPage();
+        if (StringUtils.isNotEmpty(queryPageRequest.getSiteId())) {
+            cmsPage.setSiteId(queryPageRequest.getSiteId());
+        }
+        if (StringUtils.isNotEmpty(queryPageRequest.getTemplateId())) {
+            cmsPage.setTemplateId(queryPageRequest.getTemplateId());
+        }
+        if (StringUtils.isNotEmpty(queryPageRequest.getPageAliase())) {
+            cmsPage.setPageAliase(queryPageRequest.getPageAliase());
+        }
+        Example<CmsPage> example = Example.of(cmsPage, exampleMatcher);
+
         // 参数处理
         if (page <= 0) {
             page = 1;
@@ -37,10 +56,9 @@ public class CmsPageServiceImpl implements CmsPageService {
         if (size < 0) {
             size = 10;
         }
-
         // 分页参数
         Pageable pageable = PageRequest.of(page, size);
-        Page<CmsPage> cmsPagePage = cmsPageRepository.findAll(pageable);
+        Page<CmsPage> cmsPagePage = cmsPageRepository.findAll(example, pageable);
 
         // 封装返回结果
         QueryResult queryResult = new QueryResult();
