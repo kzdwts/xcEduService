@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class CmsPageServiceImpl implements CmsPageService {
@@ -79,7 +80,7 @@ public class CmsPageServiceImpl implements CmsPageService {
         CmsPage existCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
 
         // 如果没有就新增
-        if(ObjectUtils.isEmpty( existCmsPage)) {
+        if (ObjectUtils.isEmpty(existCmsPage)) {
             // 新增
             cmsPage.setPageId(null);
             cmsPage.setPageCreateTime(new Date());
@@ -88,5 +89,41 @@ public class CmsPageServiceImpl implements CmsPageService {
             return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
         }
         return new CmsPageResult(CommonCode.FAIL, null);
+    }
+
+    @Override
+    public CmsPage findById(String pageId) {
+        Optional<CmsPage> opCmsPage = cmsPageRepository.findById(pageId);
+        if (opCmsPage.isPresent()) {
+            CmsPage cmsPage = opCmsPage.get();
+            return cmsPage;
+        }
+        return null;
+    }
+
+    @Override
+    public CmsPageResult edit(String pageId, CmsPage cmsPage) {
+        // 先查询
+        CmsPage existsCmsPage = this.findById(pageId);
+        if (ObjectUtils.isEmpty(existsCmsPage)) {
+            // 如果为空，直接返回错误信息
+            return new CmsPageResult(CommonCode.FAIL, null);
+        }
+
+        // 补全参数
+        existsCmsPage.setTemplateId(cmsPage.getTemplateId());
+        existsCmsPage.setSiteId(cmsPage.getSiteId());
+        existsCmsPage.setPageAliase(cmsPage.getPageAliase());
+        existsCmsPage.setPageName(cmsPage.getPageName());
+        existsCmsPage.setPageWebPath(cmsPage.getPageWebPath());
+        existsCmsPage.setPageParameter(cmsPage.getPageParameter());
+
+        // 更新
+        CmsPage savedCmsPage = cmsPageRepository.save(cmsPage);
+        if (ObjectUtils.isEmpty(savedCmsPage)) {
+            // 如果为空，直接返回错误信息
+            return new CmsPageResult(CommonCode.FAIL, null);
+        }
+        return new CmsPageResult(CommonCode.SUCCESS, savedCmsPage);
     }
 }

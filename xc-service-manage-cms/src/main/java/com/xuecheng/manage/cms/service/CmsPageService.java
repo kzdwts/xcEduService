@@ -24,4 +24,21 @@ public interface CmsPageService {
      * @return
      */
     CmsPageResult add(CmsPage cmsPage);
+
+    /**
+     * 根据id查询详情
+     *
+     * @param pageId
+     * @return
+     */
+    CmsPage findById(String pageId);
+
+    /**
+     * 更新页面
+     *
+     * @param pageId
+     * @param cmsPage
+     * @return
+     */
+    CmsPageResult edit(String pageId, CmsPage cmsPage);
 }

@@ -9,6 +9,8 @@ import com.xuecheng.manage.cms.service.CmsPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/cms/page")
 public class CmsPageController implements CmsPageControllerApi {
@@ -49,5 +51,30 @@ public class CmsPageController implements CmsPageControllerApi {
     @Override
     public CmsPageResult add(@RequestBody CmsPage cmsPage) {
         return cmsPageService.add(cmsPage);
+    }
+
+    /**
+     * 查询页面详情
+     *
+     * @param pageId 页面id
+     * @return
+     */
+    @GetMapping("/findById/{pageId}")
+    @Override
+    public CmsPage findById(@PathVariable("pageId") String pageId) {
+        return cmsPageService.findById(pageId);
+    }
+
+    /**
+     * 更新
+     *
+     * @param pageId  页面id
+     * @param cmsPage 页面信息
+     * @return
+     */
+    @PutMapping("/edit/{pageId}")
+    @Override
+    public CmsPageResult edit(@PathVariable("pageId") String pageId, @RequestBody CmsPage cmsPage) {
+        return cmsPageService.edit(pageId, cmsPage);
     }
 }

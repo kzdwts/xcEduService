@@ -12,14 +12,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "cms页面管理接口", description = "cms页面管理接口，提供页面的增删改查")
 public interface CmsPageControllerApi {
 
-    /**
-     * 页面查询
-     *
-     * @param page
-     * @param size
-     * @param queryPageRequest
-     * @return
-     */
     @ApiOperation("分页查询页面列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页码", required = true, paramType = "path", dataType = "int"),
@@ -27,13 +19,13 @@ public interface CmsPageControllerApi {
     })
     QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest);
 
-    /**
-     * 新增页面
-     *
-     * @param cmsPage
-     * @return
-     */
     @ApiOperation("新增页面")
     CmsPageResult add(CmsPage cmsPage);
+
+    @ApiOperation("查询页面详情")
+    CmsPage findById(String pageId);
+
+    @ApiOperation("修改页面")
+    CmsPageResult edit(String pageId, CmsPage cmsPage);
 
 }
