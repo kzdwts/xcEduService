@@ -4,6 +4,7 @@ import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.ResponseResult;
 
 public interface CmsPageService {
 
@@ -41,4 +42,12 @@ public interface CmsPageService {
      * @return
      */
     CmsPageResult edit(String pageId, CmsPage cmsPage);
+
+    /**
+     * 删除页面
+     *
+     * @param pageId
+     * @return
+     */
+    ResponseResult delete(String pageId);
 }
