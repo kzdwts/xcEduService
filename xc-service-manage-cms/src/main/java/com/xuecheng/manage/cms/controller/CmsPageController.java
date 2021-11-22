@@ -50,7 +50,7 @@ public class CmsPageController implements CmsPageControllerApi {
      */
     @PostMapping("/add")
     @Override
-    public CmsPageResult add(@RequestBody CmsPage cmsPage) {
+    public CmsPageResult add(@RequestBody @Valid CmsPage cmsPage) {
         return cmsPageService.add(cmsPage);
     }
 

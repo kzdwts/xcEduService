@@ -2,7 +2,10 @@ package com.xuecheng.manage.cms.service.impl;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
+import com.xuecheng.framework.domain.cms.response.CmsCode;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.exception.CustomerException;
+import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -81,15 +84,17 @@ public class CmsPageServiceImpl implements CmsPageService {
         CmsPage existCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
 
         // 如果没有就新增
-        if (ObjectUtils.isEmpty(existCmsPage)) {
-            // 新增
-            cmsPage.setPageId(null);
-            cmsPage.setPageCreateTime(new Date());
-            cmsPageRepository.save(cmsPage);
-            // 返回成功
-            return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
+        if (!ObjectUtils.isEmpty(existCmsPage)) {
+            // 页面名称已存在
+            ExceptionCast.cast(CmsCode.CMS_ADDPAGE_EXISTSNAME);
         }
-        return new CmsPageResult(CommonCode.FAIL, null);
+
+        // 新增
+        cmsPage.setPageId(null);
+        cmsPage.setPageCreateTime(new Date());
+        cmsPageRepository.save(cmsPage);
+        // 返回成功
+        return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
     }
 
     @Override
@@ -123,7 +128,9 @@ public class CmsPageServiceImpl implements CmsPageService {
         CmsPage savedCmsPage = cmsPageRepository.save(cmsPage);
         if (ObjectUtils.isEmpty(savedCmsPage)) {
             // 如果为空，直接返回错误信息
-            return new CmsPageResult(CommonCode.FAIL, null);
+//            return new CmsPageResult(CommonCode.FAIL, null);
+//            throw new CustomerException(CommonCode.FAIL);
+            ExceptionCast.cast(CommonCode.FAIL);
         }
         return new CmsPageResult(CommonCode.SUCCESS, savedCmsPage);
     }
@@ -133,7 +140,8 @@ public class CmsPageServiceImpl implements CmsPageService {
         // 先查询
         CmsPage cmsPage = this.findById(pageId);
         if (ObjectUtils.isEmpty(cmsPage)) {
-            return new ResponseResult(CommonCode.FAIL);
+//            return new ResponseResult(CommonCode.FAIL);
+            ExceptionCast.cast(CommonCode.FAIL);
         }
 
         // 删除

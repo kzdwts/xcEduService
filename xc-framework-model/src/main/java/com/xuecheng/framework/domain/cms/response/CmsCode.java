@@ -24,7 +24,7 @@ public enum CmsCode implements ResultCode {
     private CmsCode(boolean success, int code, String msg){
         this.success = success;
         this.code = code;
-        this.msg = CmsCode.this.msg;
+        this.msg = msg;
     }
 
     @Override
