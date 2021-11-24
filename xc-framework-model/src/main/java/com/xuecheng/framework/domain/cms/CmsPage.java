@@ -5,7 +5,6 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class CmsPage {
      * 页面名称、别名、访问地址、类型（静态/动态）、页面模版、状态
      */
     //站点ID
-    @NotNull(message = "站点id不能为空")
     private String siteId;
     //页面ID
     @Id
