@@ -123,6 +123,7 @@ public class CmsPageServiceImpl implements CmsPageService {
         existsCmsPage.setPageName(cmsPage.getPageName());
         existsCmsPage.setPageWebPath(cmsPage.getPageWebPath());
         existsCmsPage.setPageParameter(cmsPage.getPageParameter());
+        existsCmsPage.setDataUrl(cmsPage.getDataUrl());
 
         // 更新
         CmsPage savedCmsPage = cmsPageRepository.save(cmsPage);
