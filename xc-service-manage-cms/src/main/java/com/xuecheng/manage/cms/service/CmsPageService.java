@@ -50,4 +50,12 @@ public interface CmsPageService {
      * @return
      */
     ResponseResult delete(String pageId);
+
+    /**
+     * 页面静态化
+     *
+     * @param pageId 页面id
+     * @return
+     */
+    String getPageHtml(String pageId);
 }

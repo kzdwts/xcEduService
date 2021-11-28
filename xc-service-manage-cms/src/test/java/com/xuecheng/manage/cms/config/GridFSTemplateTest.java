@@ -42,7 +42,7 @@ public class GridFSTemplateTest {
 
     @Test
     public void queryFile() throws IOException {
-        String fileId = "619f907665e5b00818c4e230";
+        String fileId = "61a3795d65e5b01554d39397"; // 619f907665e5b00818c4e230
         // 根据id查询文件
         GridFSFile gridFSFile = gridFsTemplate.findOne(Query.query(Criteria.where("_id").is(fileId)));
         // 打开下载流对象

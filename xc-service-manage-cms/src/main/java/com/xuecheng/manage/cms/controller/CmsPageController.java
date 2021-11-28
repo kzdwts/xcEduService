@@ -90,4 +90,11 @@ public class CmsPageController implements CmsPageControllerApi {
     public ResponseResult delete(@PathVariable("pageId") String pageId) {
         return cmsPageService.delete(pageId);
     }
+
+
+    public String getPageHtml(String pageId) {
+        // 获取页面
+        return cmsPageService.getPageHtml(pageId);
+    }
+
 }
