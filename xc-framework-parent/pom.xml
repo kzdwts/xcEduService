@@ -11,6 +11,8 @@
         <module>../xc-service-api</module>
         <module>../xc-service-manage-cms</module>
         <module>../test-freemarker</module>
+        <module>../test-rabbitmq-producer</module>
+        <module>../test-rabbitmq-consumer</module>
     </modules>
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
