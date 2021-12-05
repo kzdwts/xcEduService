@@ -1,4 +1,4 @@
-package com.xuecheng.test.rabbitmq;
+package com.xuecheng.test.producer;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

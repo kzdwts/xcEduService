@@ -1,4 +1,4 @@
-package com.xuecheng.test.rabbitmq;
+package com.xuecheng.test.producer;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
@@ -16,12 +16,12 @@ import java.util.concurrent.TimeoutException;
  * @date 2021/11/30
  * @since 1.0.0
  */
-public class Producer02_publish {
+public class Producer03_topics {
 
     // 对列
-    public static final String QUEUE_INFORM_EMAIL = "queue_inform_email";
-    public static final String QUEUE_INFORM_SMS = "queue_inform_sms";
-    public static final String EXCHANGE_FANOUT_INFORM = "exchange_fanout_inform";
+    public static final String ROUTING_KEY_EMAIL = "routing_key_email";
+    public static final String ROUTING_KEY_SMS = "routing_key_sms";
+    public static final String EXCHANGE_TOPICS_INFORM = "exchange_topics_inform";
 
     public static void main(String[] args) {
         // 通过工厂创建新的连接和mq建立连接
@@ -45,25 +45,39 @@ public class Producer02_publish {
             1、交换机名称
             2、交换机类型，fanout、topic、direct、headers
              */
-            channel.exchangeDeclare(EXCHANGE_FANOUT_INFORM, BuiltinExchangeType.FANOUT);
+            channel.exchangeDeclare(EXCHANGE_TOPICS_INFORM, BuiltinExchangeType.TOPIC);
             // 声明队列
             // 1、队列名称
             // 2、是否持久化
             // 3、是否独占此队列
             // 4、队列不用是否自动删除
             // 5、参数
-            channel.queueDeclare(QUEUE_INFORM_EMAIL, true, false, false, null);
-            channel.queueDeclare(QUEUE_INFORM_SMS, true, false, false, null);
+            channel.queueDeclare(ROUTING_KEY_EMAIL, true, false, false, null);
+            channel.queueDeclare(ROUTING_KEY_SMS, true, false, false, null);
 
             // 交换机和队列绑定
-            channel.queueBind(QUEUE_INFORM_EMAIL, EXCHANGE_FANOUT_INFORM, "");
-            channel.queueBind(QUEUE_INFORM_SMS, EXCHANGE_FANOUT_INFORM, "");
+            channel.queueBind(ROUTING_KEY_EMAIL, EXCHANGE_TOPICS_INFORM, "");
+            channel.queueBind(ROUTING_KEY_SMS, EXCHANGE_TOPICS_INFORM, "");
 
-            // 发送消息
+            // 发送邮件消息
             for (int i = 0; i < 5; i++) {
-                String msg = "inform to user " + i;
-                channel.basicPublish(EXCHANGE_FANOUT_INFORM, "", null, msg.getBytes(StandardCharsets.UTF_8));
-                System.out.println("send mq message " + msg);
+                String msg = "email info to user " + i;
+                channel.basicPublish(EXCHANGE_TOPICS_INFORM, "inform.email", null, msg.getBytes(StandardCharsets.UTF_8));
+                System.out.println("send mq email message: " + msg);
+            }
+
+            // 发送短信消息
+            for (int i = 0; i < 5; i++) {
+                String msg = "sms info to user " + i;
+                channel.basicPublish(EXCHANGE_TOPICS_INFORM, "inform.sms", null, msg.getBytes(StandardCharsets.UTF_8));
+                System.out.println("send mq sms message: " + msg);
+            }
+
+            // 发送邮件、短信消息
+            for (int i = 0; i < 5; i++) {
+                String msg = "email and sms info to user " + i;
+                channel.basicPublish(EXCHANGE_TOPICS_INFORM, "inform.sms.email", null, msg.getBytes(StandardCharsets.UTF_8));
+                System.out.println("send mq email、sms message: " + msg);
             }
 
         } catch (IOException e) {
