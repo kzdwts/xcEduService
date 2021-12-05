@@ -12,11 +12,11 @@ import java.util.concurrent.TimeoutException;
  * @date 2021/11/30
  * @since 1.0.0
  */
-public class Consumer01_publish_email {
+public class Consumer03_topics_email {
 
     // 对列
-    public static final String QUEUE_INFORM_EMAIL = "queue_inform_email";
-    public static final String EXCHANGE_FANOUT_INFORM = "exchange_fanout_inform";
+    public static final String ROUTING_KEY_EMAIL = "routing_key_email";
+    public static final String EXCHANGE_TOPICS_INFORM = "exchange_topics_inform";
 
 
     public static void main(String[] args) {
@@ -38,17 +38,17 @@ public class Consumer01_publish_email {
             1、交换机名称
             2、交换机类型，fanout、topic、direct、headers
              */
-            channel.exchangeDeclare(EXCHANGE_FANOUT_INFORM, BuiltinExchangeType.FANOUT);
+            channel.exchangeDeclare(EXCHANGE_TOPICS_INFORM, BuiltinExchangeType.TOPIC);
             // 声明队列
             // 1、队列名称
             // 2、是否持久化
             // 3、是否独占此队列
             // 4、队列不用是否自动删除
             // 5、参数
-            channel.queueDeclare(QUEUE_INFORM_EMAIL, true, false, false, null);
+            channel.queueDeclare(ROUTING_KEY_EMAIL, true, false, false, null);
 
             // 交换机和队列绑定
-            channel.queueBind(QUEUE_INFORM_EMAIL, EXCHANGE_FANOUT_INFORM, "");
+            channel.queueBind(ROUTING_KEY_EMAIL, EXCHANGE_TOPICS_INFORM, "inform.#.email.#");
 
             // 实现消费方法
             DefaultConsumer defaultConsumer = new DefaultConsumer(channel) {
@@ -75,7 +75,7 @@ public class Consumer01_publish_email {
              * 2、autoAck 自动回复，当消费者接收到消息后要告诉mq消息已接收，如果将此参数设置为true表示会自动回复mq，如果设置为false，表示要编程实现回复
              * 3、callback， 消费方法，当消费者接收到消息要执行的方法
              */
-            channel.basicConsume(QUEUE_INFORM_EMAIL, true, defaultConsumer);
+            channel.basicConsume(ROUTING_KEY_EMAIL, true, defaultConsumer);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {
