@@ -11,3 +11,9 @@ spring:
     cache: false # 关闭缓存模板，方便测试
     settings:
       template_update_delay: 0
+  rabbitmq:
+    host: 192.168.100.132
+    port: 5672
+    username: kangyong
+    password: kangyong
+    virtual-host: /
