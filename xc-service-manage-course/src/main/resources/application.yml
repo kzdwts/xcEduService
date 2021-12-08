@@ -1,19 +1,22 @@
- server:
+server:
   port: 31200
 spring:
   application:
     name: xc-service-manage-course
   datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.100.132:3306/xc_course?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true
+    username: root
+    password: 1024KangYong@MySQL
     druid:
-      url: jdbc:mysql://192.168.100.132:3306/xc_course?characterEncoding=utf-8
-      username: root
-      password: mysql
-      driverClassName: com.mysql.jdbc.Driver
-      initialSize: 5  #初始建立连接数量
-      minIdle: 5  #最小连接数量
-      maxActive: 20 #最大连接数量
-      maxWait: 10000  #获取连接最大等待时间，毫秒
-      testOnBorrow: true #申请连接时检测连接是否有效
-      testOnReturn: false #归还连接时检测连接是否有效
-      timeBetweenEvictionRunsMillis: 60000 #配置间隔检测连接是否有效的时间（单位是毫秒）
-      minEvictableIdleTimeMillis: 300000  #连接在连接池的最小生存时间（毫秒）
+      initial-size: 5
+      min-idle: 5
+      max-active: 20 # 最大连接数量
+      max-wait: 10000 # 获取连接最大等待时间，毫秒
+      test-on-borrow: true # 申请连接时检测连接是否有效
+      test-on-return: false #归还连接时检测连接是否有效
+      time-between-eviction-runs-millis: 60000  # 配置间隔检测连接是否有效的时间（单位是毫秒）
+      min-evictable-idle-time-millis: 300000 # 连接在连接池的最小生存时间（毫秒）
+    hikari:
+      max-lifetime: 28830000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL wait_timeout参数（show variables like '%timeout%';）
+      maximum-pool-size: 9 # 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
