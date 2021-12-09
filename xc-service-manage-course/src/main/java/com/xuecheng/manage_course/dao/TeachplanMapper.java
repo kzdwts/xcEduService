@@ -2,6 +2,7 @@ package com.xuecheng.manage_course.dao;
 
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 课程计划mapper
@@ -21,6 +22,6 @@ public interface TeachplanMapper {
      * @author Kang Yong
      * @date 2021/12/9
      */
-    TeachplanNode selectList(String courseId);
+    TeachplanNode selectList(@Param("courseId") String courseId);
 
 }

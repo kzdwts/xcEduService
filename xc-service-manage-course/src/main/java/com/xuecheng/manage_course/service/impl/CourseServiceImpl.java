@@ -1,6 +1,8 @@
 package com.xuecheng.manage_course.service.impl;
 
+import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.dao.TeachplanMapper;
 import com.xuecheng.manage_course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +25,10 @@ public class CourseServiceImpl implements CourseService {
     public TeachplanNode findTeachplanList(String courseId) {
         TeachplanNode teachplanNode = this.teachplanMapper.selectList(courseId);
         return teachplanNode;
+    }
+
+    @Override
+    public ResponseResult addTeachplan(Teachplan teachplan) {
+        return null;
     }
 }
