@@ -1,12 +1,24 @@
 package com.xuecheng.manage_course.service.impl;
 
+import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.dao.CourseBaseRepository;
 import com.xuecheng.manage_course.dao.TeachplanMapper;
+import com.xuecheng.manage_course.dao.TeachplanRepository;
 import com.xuecheng.manage_course.service.CourseService;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 课程管理
@@ -19,6 +31,12 @@ import org.springframework.stereotype.Service;
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
+    private CourseBaseRepository courseBaseRepository;
+
+    @Autowired
+    private TeachplanRepository teachplanRepository;
+
+    @Autowired
     private TeachplanMapper teachplanMapper;
 
     @Override
@@ -28,7 +46,78 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public ResponseResult addTeachplan(Teachplan teachplan) {
-        return null;
+        // 参数非空判断
+        if (teachplan == null
+                || StringUtils.isBlank(teachplan.getCourseid())
+                || StringUtils.isBlank(teachplan.getPname())
+        ) {
+            return new ResponseResult(CommonCode.INVALIDATE_PARAM);
+        }
+
+        // 课程id
+        String courseid = teachplan.getCourseid();
+        // 获取父节点
+        String parentId = teachplan.getParentid();
+        if (StringUtils.isBlank(parentId)) {
+            parentId = this.getTeahplanRoot(courseid, "0");
+            if (parentId == null) {
+                // 课程id非法
+                return new ResponseResult(CommonCode.INVALIDATE_PARAM);
+            }
+        }
+
+        // 查询父节点
+        Optional<Teachplan> optionalTeachplan = this.teachplanRepository.findById(parentId);
+        Teachplan parentNode = optionalTeachplan.get();
+        // 保存课程计划
+        Teachplan teachplanNew = new Teachplan();
+        BeanUtils.copyProperties(teachplan, teachplanNew);
+        teachplanNew.setParentid(parentId);
+        teachplanNew.setCourseid(courseid);
+        teachplanNew.setStatus("0"); // 未发布
+        if (parentNode.getGrade().equals("1")) {
+            // 一共只有三级
+            teachplanNew.setGrade("2");
+        } else {
+            teachplanNew.setGrade("3");
+        }
+        this.teachplanRepository.save(teachplanNew);
+        return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    /**
+     * 获取课程计划父节点id
+     *
+     * @param courseid 课程id
+     * @param parentId 父节点
+     * @return
+     */
+    private String getTeahplanRoot(String courseid, String parentId) {
+        // 查询课程信息
+        Optional<CourseBase> optionalCourseBase = this.courseBaseRepository.findById(courseid);
+        if (!optionalCourseBase.isPresent()) {
+            return null;
+        }
+        CourseBase courseBase = optionalCourseBase.get();
+
+        // 查询
+        List<Teachplan> teachplanList = this.teachplanRepository.findByCourseidAndParentid(courseid, parentId);
+        if (CollectionUtils.isEmpty(teachplanList)) {
+            // 新增
+            Teachplan teachplanRoot = new Teachplan();
+            teachplanRoot.setCourseid(courseid);
+            teachplanRoot.setParentid("0");
+            teachplanRoot.setPname(courseBase.getName());
+            teachplanRoot.setGrade("1"); // 一级
+            teachplanRoot.setStatus("0"); // 未发布
+            // 保存
+            teachplanRepository.save(teachplanRoot);
+            return teachplanRoot.getId();
+        }
+
+        // 不为空，直接返回id
+        return teachplanList.get(0).getId();
     }
 }
