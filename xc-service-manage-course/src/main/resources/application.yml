@@ -27,3 +27,6 @@ mybatis:
 logging:
   level:
     com.xuecheng.manage_course.dao: trace
+pagehelper:
+  # sql方言
+  helper-dialect: mysql
