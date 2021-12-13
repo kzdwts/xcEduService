@@ -1,8 +1,10 @@
 package com.xuecheng.manage_course.service;
 
+import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
+import com.xuecheng.framework.domain.course.response.AddCourseResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 
@@ -45,4 +47,11 @@ public interface CourseService {
      */
     QueryResponseResult findCourseList(Integer pageNum, Integer pageSize, CourseListRequest courseListRequest);
 
+    /**
+     * 添加课程基础信息
+     *
+     * @param courseBase
+     * @return
+     */
+    AddCourseResult addCourseBase(CourseBase courseBase);
 }
