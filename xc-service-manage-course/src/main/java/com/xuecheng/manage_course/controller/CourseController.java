@@ -84,4 +84,29 @@ public class CourseController implements CourseControllerApi {
         return courseService.addCourseBase(courseBase);
     }
 
+    /**
+     * 获取课程基础信息
+     *
+     * @param courseId
+     * @return
+     */
+    @Override
+    @GetMapping("/coursebase/get/{courseId}")
+    public CourseBase getCourseBaseById(@PathVariable("courseId") String courseId) {
+        return courseService.getCoursebaseById(courseId);
+    }
+
+    /**
+     * 更新课程基础信息
+     *
+     * @param id
+     * @param courseBase
+     * @return
+     */
+    @Override
+    @PutMapping("/coursebase/update/{id}")
+    public ResponseResult updateCourseBase(@PathVariable("id") String id, @RequestBody CourseBase courseBase) {
+        return courseService.updateCoursebase(id, courseBase);
+    }
+
 }

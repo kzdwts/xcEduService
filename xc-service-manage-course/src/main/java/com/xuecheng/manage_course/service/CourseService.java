@@ -54,4 +54,21 @@ public interface CourseService {
      * @return
      */
     AddCourseResult addCourseBase(CourseBase courseBase);
+
+    /**
+     * 获取课程基础信息
+     *
+     * @param courseId
+     * @return
+     */
+    CourseBase getCoursebaseById(String courseId);
+
+    /**
+     * 更新课程信息
+     *
+     * @param id         课程id
+     * @param courseBase 课程信息
+     * @return
+     */
+    ResponseResult updateCoursebase(String id, CourseBase courseBase);
 }

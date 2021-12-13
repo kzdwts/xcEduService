@@ -8,6 +8,7 @@ import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.domain.course.response.AddCourseResult;
+import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -124,6 +125,35 @@ public class CourseServiceImpl implements CourseService {
         courseBase.setStatus("202001");
         courseBaseRepository.save(courseBase);
         return new AddCourseResult(CommonCode.SUCCESS, courseBase.getId());
+    }
+
+    @Override
+    public CourseBase getCoursebaseById(String courseId) {
+        Optional<CourseBase> optional = this.courseBaseRepository.findById(courseId);
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseResult updateCoursebase(String id, CourseBase courseBase) {
+        // 查询出来
+        CourseBase coursebaseExists = this.getCoursebaseById(id);
+        if (coursebaseExists == null) {
+            ExceptionCast.cast(CommonCode.INVALIDATE_PARAM);
+        }
+
+        // 修改课程信息
+        coursebaseExists.setName(courseBase.getName());
+        coursebaseExists.setMt(courseBase.getMt());
+        coursebaseExists.setSt(courseBase.getSt());
+        coursebaseExists.setGrade(courseBase.getGrade());
+        coursebaseExists.setStudymodel(courseBase.getStudymodel());
+        coursebaseExists.setUsers(courseBase.getUsers());
+        coursebaseExists.setDescription(courseBase.getDescription());
+        CourseBase save = this.courseBaseRepository.save(coursebaseExists);
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 
     /**
