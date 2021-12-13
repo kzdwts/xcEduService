@@ -2,6 +2,8 @@ package com.xuecheng.manage_course.dao;
 
 import com.github.pagehelper.Page;
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.ext.CourseInfo;
+import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -27,4 +29,12 @@ public interface CourseMapper {
      * @return
      */
     List<CourseBase> findPageList();
+
+    /**
+     * 分页查询课程列表
+     *
+     * @param courseListRequest
+     * @return
+     */
+    Page<CourseInfo> findCoursePaageList(CourseListRequest courseListRequest);
 }

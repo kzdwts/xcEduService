@@ -1,11 +1,18 @@
 package com.xuecheng.manage_course.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
+import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.model.response.CommonCode;
+import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.dao.CourseBaseRepository;
+import com.xuecheng.manage_course.dao.CourseMapper;
 import com.xuecheng.manage_course.dao.TeachplanMapper;
 import com.xuecheng.manage_course.dao.TeachplanRepository;
 import com.xuecheng.manage_course.service.CourseService;
@@ -32,6 +39,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseBaseRepository courseBaseRepository;
+
+    @Autowired
+    private CourseMapper courseMapper;
 
     @Autowired
     private TeachplanRepository teachplanRepository;
@@ -85,6 +95,25 @@ public class CourseServiceImpl implements CourseService {
         }
         this.teachplanRepository.save(teachplanNew);
         return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public QueryResponseResult findCourseList(Integer pageNum, Integer pageSize, CourseListRequest courseListRequest) {
+        if (courseListRequest == null) {
+            courseListRequest = new CourseListRequest();
+        }
+        if (pageNum <= 0) pageNum = 0;
+        if (pageSize <= 0) pageSize = 20;
+
+        // 分页
+        PageHelper.startPage(pageNum, pageSize);
+        // 查询
+        Page<CourseInfo> courseInfoPage = this.courseMapper.findCoursePaageList(courseListRequest);
+        QueryResult<CourseInfo> courseInfoQueryResult = new QueryResult<>();
+        courseInfoQueryResult.setList(courseInfoPage.getResult());
+        courseInfoQueryResult.setTotal(courseInfoPage.getTotal());
+
+        return new QueryResponseResult<CourseInfo>(CommonCode.SUCCESS, courseInfoQueryResult);
     }
 
     /**
