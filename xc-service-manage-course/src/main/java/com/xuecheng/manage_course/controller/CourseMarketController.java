@@ -6,7 +6,7 @@ import com.xuecheng.framework.model.response.ResponseResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * TODO desc
+ * 课程营销信息，控制层
  *
  * @author Kang Yong
  * @date 2021/12/13
