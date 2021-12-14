@@ -15,6 +15,7 @@
         <module>../test-rabbitmq-consumer</module>
         <module>../xc-service-manage-cms-client</module>
         <module>../xc-service-manage-course</module>
+        <module>../test-fastdfs</module>
     </modules>
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
