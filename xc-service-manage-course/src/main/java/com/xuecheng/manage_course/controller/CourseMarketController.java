@@ -3,6 +3,8 @@ package com.xuecheng.manage_course.controller;
 import com.xuecheng.api.course.CourseMarketControllerApi;
 import com.xuecheng.framework.domain.course.CourseMarket;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.service.CourseMarketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/course")
 public class CourseMarketController implements CourseMarketControllerApi {
 
+    @Autowired
+    private CourseMarketService courseMarketService;
+
     /**
      * 根据课程id获取课程营销信息
      *
@@ -25,7 +30,7 @@ public class CourseMarketController implements CourseMarketControllerApi {
     @Override
     @GetMapping("/coursemarket/get/{courseId}")
     public CourseMarket getCourseMarketById(@PathVariable("courseId") String courseId) {
-        return null;
+        return courseMarketService.getCourseMarketById(courseId);
     }
 
     /**
@@ -38,6 +43,6 @@ public class CourseMarketController implements CourseMarketControllerApi {
     @Override
     @PostMapping("/coursemarket/update/{id}")
     public ResponseResult updateCourseMarket(@PathVariable("id") String id, @RequestBody CourseMarket courseMarket) {
-        return null;
+        return this.courseMarketService.updateCourseMarket(id, courseMarket);
     }
 }
