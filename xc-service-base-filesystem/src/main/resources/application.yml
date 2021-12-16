@@ -1,0 +1,25 @@
+server:
+  port: 22100
+spring:
+  application:
+    name: xc-service-base-filesystem
+# mongo配置
+  data:
+    mongodb:
+      database: xc_fs
+      uri: mongodb://root:123@localhost:27017
+# springmvc 上传文件配置
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      location: D:// # 上传文件的临时目录
+      max-file-size: 10MB
+      max-request-size: 30MB
+xuecheng:
+  fastdfs:
+    connect_timeout_in_seconds: 5 # http连接超时时间
+    network_timeout_in_seconds: 30 # tracker与storage网络通信超时时间
+    charset: UTF-8
+    tracker_servers: 192.168.100.132:22122 # tracker服务器地址，多个地址中间使用英文逗号隔开
+

@@ -10,14 +10,16 @@ import lombok.ToString;
  */
 @ToString
 public enum FileSystemCode implements ResultCode {
-    FS_UPLOADFILE_FILEISNULL(false,25001,"上传文件为空！"),
-    FS_UPLOADFILE_BUSINESSISNULL(false,25002,"业务Id为空！"),
-    FS_UPLOADFILE_SERVERFAIL(false,25003,"上传文件服务器失败！"),
-    FS_DELETEFILE_NOTEXISTS(false,25004,"删除的文件不存在！"),
-    FS_DELETEFILE_DBFAIL(false,25005,"删除文件信息失败！"),
-    FS_DELETEFILE_SERVERFAIL(false,25006,"删除文件失败！"),
-    FS_UPLOADFILE_METAERROR(false,25007,"上传文件的元信息请使用json格式！"),
-    FS_UPLOADFILE_USERISNULL(false,25008,"上传文件用户为空！");
+    FS_UPLOADFILE_FILEISNULL(false, 25001, "上传文件为空！"),
+    FS_UPLOADFILE_BUSINESSISNULL(false, 25002, "业务Id为空！"),
+    FS_UPLOADFILE_SERVERFAIL(false, 25003, "上传文件服务器失败！"),
+    FS_DELETEFILE_NOTEXISTS(false, 25004, "删除的文件不存在！"),
+    FS_DELETEFILE_DBFAIL(false, 25005, "删除文件信息失败！"),
+    FS_DELETEFILE_SERVERFAIL(false, 25006, "删除文件失败！"),
+    FS_UPLOADFILE_METAERROR(false, 25007, "上传文件的元信息请使用json格式！"),
+    FS_UPLOADFILE_USERISNULL(false, 25008, "上传文件用户为空！"),
+    FS_INITFDFS_ERROR(false, 25009, "上传文件用户为空！"),
+    ;
 
     //操作代码
     boolean success;
@@ -26,11 +28,13 @@ public enum FileSystemCode implements ResultCode {
     int code;
     //提示信息
     String msg;
-    private FileSystemCode(boolean success, int code, String msg){
+
+    private FileSystemCode(boolean success, int code, String msg) {
         this.success = success;
         this.code = code;
         this.msg = FileSystemCode.this.msg;
     }
+
     private static final ImmutableMap<Integer, FileSystemCode> CACHE;
 
     static {
