@@ -17,6 +17,7 @@
         <module>../xc-service-manage-course</module>
         <module>../test-fastdfs</module>
         <module>../xc-service-base-filesystem</module>
+        <module>../xc-govern-center</module>
     </modules>
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
