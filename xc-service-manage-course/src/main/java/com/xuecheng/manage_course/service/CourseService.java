@@ -1,6 +1,7 @@
 package com.xuecheng.manage_course.service;
 
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
@@ -71,4 +72,36 @@ public interface CourseService {
      * @return
      */
     ResponseResult updateCoursebase(String id, CourseBase courseBase);
+
+    /**
+     * 新增图片
+     *
+     * @param courseId {@link String} 课程id
+     * @param pic      {@link String} 图片
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    ResponseResult saveCoursePic(String courseId, String pic);
+
+    /**
+     * 获取课程图片信息
+     *
+     * @param courseId {@link String}
+     * @return {@link CoursePic}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    CoursePic findCoursePic(String courseId);
+
+    /**
+     * 删除课程图片信息
+     *
+     * @param courseId {@link String}
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    ResponseResult deleteCoursePic(String courseId);
+
 }

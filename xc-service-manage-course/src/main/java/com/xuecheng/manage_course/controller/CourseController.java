@@ -2,6 +2,7 @@ package com.xuecheng.manage_course.controller;
 
 import com.xuecheng.api.course.CourseControllerApi;
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
@@ -107,6 +108,49 @@ public class CourseController implements CourseControllerApi {
     @PutMapping("/coursebase/update/{id}")
     public ResponseResult updateCourseBase(@PathVariable("id") String id, @RequestBody CourseBase courseBase) {
         return courseService.updateCoursebase(id, courseBase);
+    }
+
+    /**
+     * 添加课程图片
+     *
+     * @param courseId {@link String} 课程id
+     * @param pic      {@link String} 图片
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    @Override
+    @PostMapping("/coursepic/add")
+    public ResponseResult addCoursePic(@RequestParam("courseId") String courseId, @RequestParam("pic") String pic) {
+        return courseService.saveCoursePic(courseId, pic);
+    }
+
+    /**
+     * 获取课程图片信息
+     *
+     * @param courseId {@link String} 课程id
+     * @return {@link CoursePic}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    @Override
+    @GetMapping("/coursepic/list/{courseId}")
+    public CoursePic findCoursePic(String courseId) {
+        return courseService.findCoursePic(courseId);
+    }
+
+    /**
+     * 删除课程图片信息
+     *
+     * @param courseId {@link String} 课程ID
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    @Override
+    @DeleteMapping("/coursepic/delete")
+    public ResponseResult deleteCoursePic(@RequestParam("courseId") String courseId) {
+        return courseService.deleteCoursePic(courseId);
     }
 
 }

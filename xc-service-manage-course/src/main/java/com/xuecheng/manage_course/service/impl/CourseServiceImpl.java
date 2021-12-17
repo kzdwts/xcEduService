@@ -3,6 +3,7 @@ package com.xuecheng.manage_course.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.xuecheng.framework.domain.course.CourseBase;
+import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
@@ -13,12 +14,8 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
-import com.xuecheng.manage_course.dao.CourseBaseRepository;
-import com.xuecheng.manage_course.dao.CourseMapper;
-import com.xuecheng.manage_course.dao.TeachplanMapper;
-import com.xuecheng.manage_course.dao.TeachplanRepository;
+import com.xuecheng.manage_course.dao.*;
 import com.xuecheng.manage_course.service.CourseService;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +47,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private TeachplanMapper teachplanMapper;
+
+    @Autowired
+    private CoursePicRepository coursePicRepository;
 
     @Override
     public TeachplanNode findTeachplanList(String courseId) {
@@ -154,6 +154,70 @@ public class CourseServiceImpl implements CourseService {
         coursebaseExists.setDescription(courseBase.getDescription());
         CourseBase save = this.courseBaseRepository.save(coursebaseExists);
         return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    /**
+     * 新增图片
+     *
+     * @param courseId {@link String} 课程id
+     * @param pic      {@link String} 图片
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    @Override
+    public ResponseResult saveCoursePic(String courseId, String pic) {
+        // 查询
+        Optional<CoursePic> optionalCoursePic = this.coursePicRepository.findById(courseId);
+        CoursePic coursePic = null;
+        if (optionalCoursePic.isPresent()) {
+            coursePic = optionalCoursePic.get();
+        }
+
+        // 封装参数
+        if (coursePic == null) {
+            coursePic = new CoursePic();
+        }
+        coursePic.setCourseid(courseId);
+        coursePic.setPic(pic);
+
+        return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    /**
+     * 获取课程图片信息
+     *
+     * @param courseId {@link String}
+     * @return {@link CoursePic}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    @Override
+    public CoursePic findCoursePic(String courseId) {
+        // 直接查询
+        Optional<CoursePic> optionalCoursePic = this.coursePicRepository.findById(courseId);
+        if (optionalCoursePic.isPresent()) {
+            return optionalCoursePic.get();
+        }
+        return null;
+    }
+
+    /**
+     * 删除课程图片信息
+     *
+     * @param courseId {@link String}
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2021/12/17
+     */
+    @Transactional
+    @Override
+    public ResponseResult deleteCoursePic(String courseId) {
+        long result = coursePicRepository.deleteByCourseid(courseId);
+        if (result > 0) {
+            return new ResponseResult(CommonCode.SUCCESS);
+        }
+        return new ResponseResult(CommonCode.FAIL);
     }
 
     /**
