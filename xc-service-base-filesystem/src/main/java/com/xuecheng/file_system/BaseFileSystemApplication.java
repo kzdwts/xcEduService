@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan("com.xuecheng.framework.domain.filesystem") // 扫描实体类
 @ComponentScan(basePackages = {"com.xuecheng.api"}) // 扫描接口
 @ComponentScan(basePackages = {"com.xuecheng.framework"}) // 扫描framework中通用类
-@ComponentScan(basePackages = {"com.xuecheng.filesystem"}) // 扫描本项目下的所有类
+@ComponentScan(basePackages = {"com.xuecheng.file_system"}) // 扫描本项目下的所有类
 public class BaseFileSystemApplication {
 
     public static void main(String[] args) {
