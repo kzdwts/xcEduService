@@ -28,7 +28,7 @@ public class TestRibbon {
     public void demo01TestRibbon() {
         // 确定要获取的服务名称
         String serviceId = "XC-SERVICE-MANAGE-CMS";
-        ResponseEntity<Map> entity = restTemplate.getForEntity("http://" + serviceId + "/cms/page/get/", Map.class);
+        ResponseEntity<Map> entity = restTemplate.getForEntity("http://" + serviceId + "/cms/page/findById/5a754adf6abb500ad05688d9", Map.class);
         Map map = entity.getBody();
         System.out.println(map);
     }
