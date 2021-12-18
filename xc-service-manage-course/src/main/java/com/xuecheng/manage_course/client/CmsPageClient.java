@@ -16,6 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CmsPageClient {
 
     // 根据页面id查询页面信息，远程调用cms请求数据
-    @GetMapping("/cms/page/get/{id}") // 标识远程调用的http的方法类型
-    CmsPage findCmsPageById(@PathVariable("id") String id);
+    @GetMapping("/cms/page/findById/{pageId}") // 标识远程调用的http的方法类型
+    CmsPage findCmsPageById(@PathVariable("pageId") String id);
 }
