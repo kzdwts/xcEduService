@@ -2,6 +2,9 @@ package com.xuecheng.manage_course.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.xuecheng.framework.domain.cms.CmsPage;
+import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
+import com.xuecheng.framework.domain.cms.response.CoursePublishResult;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
@@ -14,6 +17,8 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_course.client.CmsPageClient;
+import com.xuecheng.manage_course.config.CoursePublishProperties;
 import com.xuecheng.manage_course.dao.*;
 import com.xuecheng.manage_course.service.CourseService;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +55,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CoursePicRepository coursePicRepository;
+
+    @Autowired
+    private CmsPageClient cmsPageClient;
+
+    @Autowired
+    private CoursePublishProperties coursePublishProperties;
 
     @Override
     public TeachplanNode findTeachplanList(String courseId) {
@@ -218,6 +229,86 @@ public class CourseServiceImpl implements CourseService {
             return new ResponseResult(CommonCode.SUCCESS);
         }
         return new ResponseResult(CommonCode.FAIL);
+    }
+
+    /**
+     * 课程发布
+     *
+     * @param courseId 课程id
+     * @return
+     */
+    @Transactional
+    @Override
+    public CoursePublishResult publish(String courseId) {
+        // 查询课程信息
+        CourseBase courseBase = this.findCourseBaseById(courseId);
+
+        // 发布课程详情页面
+        CmsPostPageResult cmsPostPageResult = this.publishPage(courseId);
+        if (!cmsPostPageResult.isSuccess()) {
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
+
+        // 更新课程状态
+        CourseBase updatedCourseBase = this.saveCoursePubState(courseId);
+
+        // TODO 课程索引
+
+        // 页面url
+        String pageUrl = cmsPostPageResult.getPageUrl();
+
+        return new CoursePublishResult(CommonCode.SUCCESS, pageUrl);
+    }
+
+    /**
+     * 更新课程发布状态
+     *
+     * @param courseId 课程id
+     * @return
+     */
+    private CourseBase saveCoursePubState(String courseId) {
+        CourseBase courseBase = this.findCourseBaseById(courseId);
+        courseBase.setStatus("202002");
+        CourseBase save = this.courseBaseRepository.save(courseBase);
+        return save;
+    }
+
+    /**
+     * 调用一键发布，进行页面发布
+     *
+     * @param courseId
+     * @return
+     */
+    private CmsPostPageResult publishPage(String courseId) {
+        // 查询详情
+        CourseBase courseBase = this.findCourseBaseById(courseId);
+        // 发布课程预览页面
+        CmsPage cmsPage = new CmsPage();
+        cmsPage.setPageName(courseId + ".html");
+        cmsPage.setPageAliase(courseBase.getName());
+        cmsPage.setSiteId(coursePublishProperties.getSiteId());
+        cmsPage.setTemplateId(coursePublishProperties.getTemplateId());
+        cmsPage.setPageWebPath(coursePublishProperties.getPageWebPath());
+        cmsPage.setPagePhysicalPath(coursePublishProperties.getPagePhysicalPath());
+        cmsPage.setDataUrl(coursePublishProperties.getDataUrlPre());
+
+        // 发布页面
+        CmsPostPageResult cmsPostPageResult = this.cmsPageClient.postPageQuick(cmsPage);
+        return cmsPostPageResult;
+    }
+
+    /**
+     * 查询coursebase信息
+     *
+     * @param courseId
+     * @return
+     */
+    private CourseBase findCourseBaseById(String courseId) {
+        Optional<CourseBase> courseBaseOptional = this.courseBaseRepository.findById(courseId);
+        if (courseBaseOptional.isPresent()) {
+            return courseBaseOptional.get();
+        }
+        return null;
     }
 
     /**

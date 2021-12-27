@@ -4,6 +4,7 @@ import com.xuecheng.api.cms.CmsPageControllerApi;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage.cms.service.CmsPageService;
@@ -101,6 +102,18 @@ public class CmsPageController implements CmsPageControllerApi {
     @Override
     public ResponseResult post(@PathVariable("pageId") String pageId) {
         return cmsPageService.postPage(pageId);
+    }
+
+    /**
+     * 一键发布
+     *
+     * @param cmsPage
+     * @return
+     */
+    @PostMapping("/postPageQuick")
+    @Override
+    public CmsPostPageResult postPageQuick(@RequestBody CmsPage cmsPage) {
+        return this.cmsPageService.postPageQuick(cmsPage);
     }
 
 

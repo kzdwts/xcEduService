@@ -1,5 +1,6 @@
 package com.xuecheng.api.course;
 
+import com.xuecheng.framework.domain.cms.response.CoursePublishResult;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
@@ -48,4 +49,10 @@ public interface CourseControllerApi {
 
     @ApiOperation("删除课程图片信息")
     ResponseResult deleteCoursePic(String courseId);
+
+    // TODO 课程预览
+
+    @ApiOperation("课程发布")
+    CoursePublishResult publish(String id);
+
 }
