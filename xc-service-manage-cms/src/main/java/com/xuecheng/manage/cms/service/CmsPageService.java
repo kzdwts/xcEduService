@@ -66,4 +66,14 @@ public interface CmsPageService {
      * @return
      */
     ResponseResult postPage(String pageId);
+
+    /**
+     * 保存页面
+     *
+     * @param cmsPage {@link CmsPage}
+     * @return {@link CmsPageResult}
+     * @author Kang Yong
+     * @date 2021/12/21
+     */
+    CmsPageResult save(CmsPage cmsPage);
 }

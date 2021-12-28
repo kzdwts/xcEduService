@@ -103,6 +103,20 @@ public class CmsPageController implements CmsPageControllerApi {
         return cmsPageService.postPage(pageId);
     }
 
+    /**
+     * 保存页面
+     *
+     * @param cmsPage {@link CmsPage} 页面信息
+     * @return {@link CmsPageResult}
+     * @author Kang Yong
+     * @date 2021/12/21
+     */
+    @Override
+    @PostMapping("/save")
+    public CmsPageResult save(@RequestBody CmsPage cmsPage) {
+        return cmsPageService.save(cmsPage);
+    }
+
 
     public String getPageHtml(String pageId) {
         // 获取页面

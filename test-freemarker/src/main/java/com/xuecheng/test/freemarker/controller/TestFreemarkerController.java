@@ -42,4 +42,20 @@ public class TestFreemarkerController {
         // 返回模板文件名称
         return "index_banner";
     }
+
+    /**
+     * 课程详情页面
+     *
+     * @param map {@link null}
+     * @return {@link String}
+     * @author Kang Yong
+     * @date 2021/12/21
+     */
+    @RequestMapping("/course")
+    public String course(Map<String, Object> map) {
+        ResponseEntity<Map> forEntity = restTemplate.getForEntity("", Map.class);
+        Map body = forEntity.getBody();
+        map.put("model", body);
+        return "course";
+    }
 }

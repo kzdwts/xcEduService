@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 页面预览 controller
+ * 页面视图 controller
  *
  * @author Kang Yong
  * @date 2021/11/28
@@ -26,7 +26,7 @@ public class CmsPagePreviewController extends BaseController {
     private CmsPageService cmsPageService;
 
     /**
-     * 页面预览
+     * 页面视图
      *
      * @param pageId
      */

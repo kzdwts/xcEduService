@@ -231,6 +231,26 @@ public class CmsPageServiceImpl implements CmsPageService {
     }
 
     /**
+     * 保存页面
+     *
+     * @param cmsPage {@link CmsPage}
+     * @return {@link CmsPageResult}
+     * @author Kang Yong
+     * @date 2021/12/21
+     */
+    @Override
+    public CmsPageResult save(CmsPage cmsPage) {
+        CmsPage existsCmsPage = this.cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
+        if (ObjectUtils.isEmpty(existsCmsPage)) {
+            // 不存在就添加
+            return this.add(cmsPage);
+        } else {
+            // 存在就更新
+            return this.edit(existsCmsPage.getPageId(), cmsPage);
+        }
+    }
+
+    /**
      * 发送消息
      *
      * @param pageId
