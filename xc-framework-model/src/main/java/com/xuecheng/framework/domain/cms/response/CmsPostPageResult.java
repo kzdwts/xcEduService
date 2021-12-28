@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 课程预览
+ * 一键发布返回信息
  *
  * @author Kang Yong
  * @date 2021/12/27
@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class CoursePublishResult extends ResponseResult {
+public class CmsPostPageResult extends ResponseResult {
 
-    private String previewUrl;
+    /**
+     * 页面url
+     */
+    private String pageUrl;
 
-    public CoursePublishResult(ResultCode resultCode, String previewUrl) {
+    public CmsPostPageResult(ResultCode resultCode, String pageUrl) {
         super(resultCode);
-        this.previewUrl = previewUrl;
+        this.pageUrl = pageUrl;
     }
 }

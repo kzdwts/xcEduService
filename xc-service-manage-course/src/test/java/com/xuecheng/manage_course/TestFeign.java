@@ -24,7 +24,8 @@ public class TestFeign {
 
     @Test
     public void demo01TestRibbon() {
-        CmsPage cmsPage = cmsPageClient.findCmsPageById("1");
+        CmsPage cmsPage = cmsPageClient.findCmsPageById("5a754adf6abb500ad05688d9");
         System.out.println(cmsPage);
+        System.out.println("SUCCESS");
     }
 }

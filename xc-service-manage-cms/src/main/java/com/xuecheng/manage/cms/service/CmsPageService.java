@@ -3,6 +3,7 @@ package com.xuecheng.manage.cms.service;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.domain.cms.response.CmsPostPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 
@@ -33,6 +34,14 @@ public interface CmsPageService {
      * @return
      */
     CmsPage findById(String pageId);
+
+    /**
+     * 添加页面，如果已经存在则更新
+     *
+     * @param cmsPage
+     * @return
+     */
+    CmsPageResult save(CmsPage cmsPage);
 
     /**
      * 更新页面
@@ -68,12 +77,10 @@ public interface CmsPageService {
     ResponseResult postPage(String pageId);
 
     /**
-     * 保存页面
+     * 一键发布
      *
-     * @param cmsPage {@link CmsPage}
-     * @return {@link CmsPageResult}
-     * @author Kang Yong
-     * @date 2021/12/21
+     * @param cmsPage
+     * @return
      */
-    CmsPageResult save(CmsPage cmsPage);
+    CmsPostPageResult postPageQuick(CmsPage cmsPage);
 }

@@ -1,5 +1,6 @@
 package com.xuecheng.manage_course.service;
 
+import com.xuecheng.framework.domain.cms.response.CoursePublishResult;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
@@ -104,4 +105,11 @@ public interface CourseService {
      */
     ResponseResult deleteCoursePic(String courseId);
 
+    /**
+     * 课程发布
+     *
+     * @param courseId 课程id
+     * @return
+     */
+    CoursePublishResult publish(String courseId);
 }
