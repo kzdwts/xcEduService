@@ -229,4 +229,55 @@ public class TestSearch {
         }
     }
 
+    /**
+     * 过滤器
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testFilter() throws IOException {
+        // 搜索请求对象
+        SearchRequest searchRequest = new SearchRequest("xc_course");
+        // 设置搜索类型
+        searchRequest.searchType("doc");
+        // 指定源构建对象
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        //
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders.multiMatchQuery("spring css", "name", "description").minimumShouldMatch("50%").field("name", 10);
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.filter(QueryBuilders.termQuery("studymodel", "201001"));
+        boolQueryBuilder.filter(QueryBuilders.rangeQuery("price").gte(60).lte(100));
+
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        // 设置源字段过滤,第一个参数，结果集包含哪些字段，第二个参数：结果集不包括哪些字段
+        searchSourceBuilder.fetchSource(new String[]{"name", "studymodel", "price", "timestamp"}, new String[]{});
+        // 搜索方式
+        searchSourceBuilder.query(QueryBuilders.termQuery("name", "spring"));
+
+        // 设置搜索源
+        searchRequest.source(searchSourceBuilder);
+        // 执行搜索
+        SearchResponse searchResponse = client.search(searchRequest);
+        // 搜索结果
+        SearchHits hits = searchResponse.getHits();
+        // 匹配到的总记录数
+        long totalHits = hits.getTotalHits();
+        // 得到匹配度高的文档
+        SearchHit[] hits1 = hits.getHits();
+        for (SearchHit hit : hits1) {
+            // 文档的id
+            String id = hit.getId();
+            // 源文档内容
+            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+            String name = (String) sourceAsMap.get("name");
+            String description = (String) sourceAsMap.get("description");
+            String studymodel = (String) sourceAsMap.get("studymodel");
+            Double price = (Double) sourceAsMap.get("price");
+            String timestamp = (String) sourceAsMap.get("timestamp");
+
+        }
+    }
+
 }
