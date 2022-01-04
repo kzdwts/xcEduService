@@ -43,6 +43,6 @@ public interface CmsPageClient {
     CmsPageResult save(@RequestBody CmsPage cmsPage);
 
     // 一键发布
-    @PostMapping("/postPageQuick")
+    @PostMapping("/cms/page/postPageQuick")
     CmsPostPageResult postPageQuick(@RequestBody CmsPage cmsPage);
 }

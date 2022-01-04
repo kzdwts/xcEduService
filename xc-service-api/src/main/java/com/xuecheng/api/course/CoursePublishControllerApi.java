@@ -3,6 +3,7 @@ package com.xuecheng.api.course;
 import com.xuecheng.framework.domain.cms.response.CoursePublishResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * 课程预览
@@ -16,4 +17,7 @@ public interface CoursePublishControllerApi {
 
     @ApiOperation("预览课程")
     CoursePublishResult preview(String id);
+
+    @ApiOperation("课程发布")
+    CoursePublishResult publish(@PathVariable String id);
 }
