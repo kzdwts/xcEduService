@@ -6,3 +6,6 @@ spring:
 xuecheng:
   elasticsearch:
     hostlist: ${eshostlist:127.0.0.1:9200} # 多个节点中间用逗号分隔
+  course:
+    index: xc_course
+    type: doc
