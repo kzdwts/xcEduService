@@ -6,6 +6,8 @@ import com.xuecheng.framework.domain.search.CourseSearchParam;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.search.service.EsCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/search/course")
 public class EsCourseController implements EsCourseControllerApi {
 
     @Autowired
@@ -31,8 +33,9 @@ public class EsCourseController implements EsCourseControllerApi {
      * @param courseSearchParam
      * @return
      */
+    @GetMapping("/list/{page}/{size}")
     @Override
-    public QueryResponseResult<CoursePub> list(int page, int size, CourseSearchParam courseSearchParam) {
+    public QueryResponseResult<CoursePub> list(@PathVariable("page") int page, @PathVariable("size") int size, CourseSearchParam courseSearchParam) {
         return esCourseService.list(page, size, courseSearchParam);
     }
 }

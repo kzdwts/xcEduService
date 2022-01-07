@@ -6,6 +6,7 @@ import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.search.service.EsCourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -33,6 +34,7 @@ import java.util.Map;
  * @date 2022/1/6
  * @since 1.0.0
  */
+@Slf4j
 @Service
 public class EsCourseServiceImpl implements EsCourseService {
 
@@ -67,7 +69,7 @@ public class EsCourseServiceImpl implements EsCourseService {
         // 创建搜索请求对象
         SearchRequest searchRequest = new SearchRequest(index);
         // 设置搜索类型
-        searchRequest.searchType(type);
+        searchRequest.types(type);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         // 过滤原字段
@@ -84,6 +86,19 @@ public class EsCourseServiceImpl implements EsCourseService {
                     .field("name", 10);
             boolQueryBuilder.must(multiMatchQueryBuilder);
         }
+        if (StringUtils.isNotEmpty(courseSearchParam.getMt())) {
+            // 根据一级分类
+            boolQueryBuilder.filter(QueryBuilders.termQuery("mt", courseSearchParam.getMt()));
+        }
+        if (StringUtils.isNotEmpty(courseSearchParam.getSt())) {
+            // 根据二级分类
+            boolQueryBuilder.filter(QueryBuilders.termQuery("st", courseSearchParam.getSt()));
+        }
+        if (StringUtils.isNotEmpty(courseSearchParam.getGrade())) {
+            // 根据难度
+            boolQueryBuilder.filter(QueryBuilders.termQuery("grade", courseSearchParam.getGrade()));
+        }
+
 
         searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
@@ -111,16 +126,20 @@ public class EsCourseServiceImpl implements EsCourseService {
                 String pic = (String) sourceAsMap.get("pic");
                 coursePub.setPic(pic);
                 // 取出价格
-                Float price = null;
-                if (!ObjectUtils.isEmpty(sourceAsMap.get("price"))) {
-                    price = Float.parseFloat((String) sourceAsMap.get("price"));
+                Double price = null;
+                Double priceOld = null;
+                try {
+                    if (!ObjectUtils.isEmpty(sourceAsMap.get("price"))) {
+                        price = Double.parseDouble((String) sourceAsMap.get("price"));
+                    }
+                    coursePub.setPrice(price);
+                    if (!ObjectUtils.isEmpty(sourceAsMap.get("price_old"))) {
+                        priceOld = Double.parseDouble((String) sourceAsMap.get("price_old"));
+                    }
+                    coursePub.setPrice_old(priceOld);
+                } catch (Exception e) {
+                    log.error(e.getMessage());
                 }
-                coursePub.setPrice(price);
-                Float priceOld = null;
-                if (!ObjectUtils.isEmpty(sourceAsMap.get("price_old"))) {
-                    priceOld = Float.parseFloat((String) sourceAsMap.get("price_old"));
-                }
-                coursePub.setPrice_old(priceOld);
                 list.add(coursePub);
             }
 
@@ -131,7 +150,7 @@ public class EsCourseServiceImpl implements EsCourseService {
 
             return coursePubQueryResponseResult;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
 
         return null;
