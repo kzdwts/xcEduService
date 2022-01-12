@@ -99,6 +99,13 @@ public class EsCourseServiceImpl implements EsCourseService {
             boolQueryBuilder.filter(QueryBuilders.termQuery("grade", courseSearchParam.getGrade()));
         }
 
+        // 分页
+        if (page <= 0) {
+            page = 1;
+        }
+        int from = (page - 1) * size;
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
 
         searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
