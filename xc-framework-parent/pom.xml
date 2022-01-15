@@ -19,6 +19,7 @@
         <module>../xc-service-base-filesystem</module>
         <module>../xc-govern-center</module>
         <module>../xc-service-search</module>
+        <module>../xc-service-manage-media</module>
     </modules>
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
