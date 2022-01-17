@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.*;
 
 /**
  * 文件测试
@@ -56,4 +57,47 @@ public class TestFile {
         rafRead.close();
 
     }
+
+    /**
+     * 测试合并文件
+     */
+    @Test
+    public void testMerge() throws IOException {
+        // 文件夹路径
+        String chunkFileFolderPath = "D:\\data\\video\\chunk\\";
+        File chunkFileFolder = new File(chunkFileFolderPath);
+        // 文件排序
+        File[] files = chunkFileFolder.listFiles();
+        List<File> fileList = new ArrayList<>(Arrays.asList(files));
+        Collections.sort(fileList, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                if (Integer.parseInt(o1.getName()) > Integer.parseInt(o2.getName())) {
+                    // 升序
+                    return 1;
+                }
+                return -1;
+            }
+        });
+
+        // 目标文件
+        String mergeFilePath = "D:\\data\\video\\lucene_merge.avi";
+        File mergeFile = new File(mergeFilePath);
+        boolean newFile = mergeFile.createNewFile();
+
+        // 写文件
+        RandomAccessFile rafWrite = new RandomAccessFile(mergeFile, "rw");
+        byte[] buffer = new byte[1024];
+        for (File file : fileList) {
+            int len = -1;
+            RandomAccessFile rafRead = new RandomAccessFile(file, "r");
+            while ((len = rafRead.read(buffer)) != -1) {
+                rafWrite.write(buffer, 0, len);
+            }
+
+            rafRead.close();
+        }
+        rafWrite.close();
+    }
+
 }
