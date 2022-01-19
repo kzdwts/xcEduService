@@ -4,7 +4,7 @@ import com.xuecheng.framework.domain.media.MediaFile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
- *
+ * 媒资文件管理 dao
  *
  * @author Kang Yong
  * @date 2022/1/16
