@@ -39,7 +39,11 @@ public class MediaUploadController implements MediaUploadControllerApi {
      */
     @Override
     @PostMapping("/register")
-    public ResponseResult register(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt) {
+    public ResponseResult register(@RequestParam("fileMd5") String fileMd5,
+                                   @RequestParam("fileName") String fileName,
+                                   @RequestParam("fileSize") Long fileSize,
+                                   @RequestParam("mimetype") String mimetype,
+                                   @RequestParam("fileExt") String fileExt) {
         return this.mediaUploadService.register(fileMd5, fileName, fileSize, mimetype, fileExt);
     }
 
@@ -55,7 +59,9 @@ public class MediaUploadController implements MediaUploadControllerApi {
      */
     @Override
     @PostMapping("/checkchunk")
-    public CheckChunkResult checkchunk(String fileMd5, Integer chunk, Integer chunkSize) {
+    public CheckChunkResult checkchunk(@RequestParam("fileMd5") String fileMd5,
+                                       @RequestParam("chunk") Integer chunk,
+                                       @RequestParam("chunkSize") Integer chunkSize) {
         return this.mediaUploadService.checkchunk(fileMd5, chunk, chunkSize);
     }
 
@@ -71,7 +77,9 @@ public class MediaUploadController implements MediaUploadControllerApi {
      */
     @Override
     @PostMapping("/uploadchunk")
-    public ResponseResult uploadchunk(@RequestParam("file") MultipartFile file, Integer chunk, String fileMd5) {
+    public ResponseResult uploadchunk(@RequestParam("file") MultipartFile file,
+                                      @RequestParam("chunk") Integer chunk,
+                                      @RequestParam("fileMd5") String fileMd5) {
         return this.mediaUploadService.uploadchunk(file, chunk, fileMd5);
     }
 
@@ -89,7 +97,11 @@ public class MediaUploadController implements MediaUploadControllerApi {
      */
     @Override
     @PostMapping("/mergechunks")
-    public ResponseResult mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt) {
+    public ResponseResult mergechunks(@RequestParam("fileMd5") String fileMd5,
+                                      @RequestParam("fileName") String fileName,
+                                      @RequestParam("fileSize") Long fileSize,
+                                      @RequestParam("mimetype") String mimetype,
+                                      @RequestParam("fileExt") String fileExt) {
         return this.mediaUploadService.mergechunks(fileMd5, fileName, fileSize, mimetype, fileExt);
     }
 }
