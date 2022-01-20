@@ -1,5 +1,6 @@
 package com.xuecheng.manage_media_process;
 
+import com.xuecheng.framework.utils.Mp4VideoUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +29,8 @@ public class ProcessBuilderTest {
         // 创建对象 ProcessBuilder
         ProcessBuilder processBuilder = new ProcessBuilder();
         // 设置第三方程序的命令
-        processBuilder.command("ping", "127.0.0.1");
+//        processBuilder.command("ping", "127.0.0.1");
+        processBuilder.command("ipconfig");
 
         // 将标准输入流和错误流合并
         processBuilder.redirectErrorStream(true);
@@ -49,6 +51,20 @@ public class ProcessBuilderTest {
         // 关闭流
         inputStream.close();
         isr.close();
+    }
+
+    @Test
+    public void testMp4VideoUtil() {
+        // 准备参数
+        String ffmpeg_path = "C:\\soft\\ffmpeg\\bin\\ffmpeg.exe";
+        String video_path = "D:\\data\\video\\solr.avi";
+        String mp4_name = "solr_test.mp4";
+        String mp4folder_path = "D:\\data\\video\\";
+        // 创建对象
+        Mp4VideoUtil mp4VideoUtil = new Mp4VideoUtil(ffmpeg_path, video_path, mp4_name, mp4folder_path);
+        // 生成MP4文件
+        String mp4 = mp4VideoUtil.generateMp4();
+        System.out.println(mp4);
     }
 
 }
