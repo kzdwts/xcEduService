@@ -20,6 +20,7 @@
         <module>../xc-govern-center</module>
         <module>../xc-service-search</module>
         <module>../xc-service-manage-media</module>
+        <module>../xc-service-manage-media-processor</module>
     </modules>
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>

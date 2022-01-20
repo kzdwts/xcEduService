@@ -1,0 +1,21 @@
+server:
+  port: 31450
+spring:
+  application:
+    name: xc-service-manage-media-processor
+  data:
+    mongodb:
+      uri: mongodb://root:123@localhost:27017
+      database: xc_media
+  rabbitmq:
+    host: 192.168.100.132
+    port: 5672
+    username: kangyong
+    password: kangyong
+    virtual-host: /
+xc-service-manage-media:
+  upload-location: D:/data/video/
+  mq:
+    queue-media-video-processor: queue-media-video-processor
+    routingkey-media-video: routingkey-media-video
+  ffmpeg-path: C:/soft/ffmpeg/bin/ffmpeg.exe

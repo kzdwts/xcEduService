@@ -95,7 +95,7 @@ public class MediaUploadServiceImpl implements MediaUploadService {
      * @return
      */
     private String getFileFolderPath(String fileMd5) {
-        String fileFolderPath = uploadPath + fileMd5.substring(0, 1) + File.separator + fileMd5.substring(1, 2) + File.separator + fileMd5 + File.separator;
+        String fileFolderPath = uploadPath + fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/";
         return fileFolderPath;
     }
 
@@ -112,7 +112,7 @@ public class MediaUploadServiceImpl implements MediaUploadService {
      * @return 文件路径
      */
     private String getFilePath(String fileMd5, String fileExt) {
-        String filePath = uploadPath + fileMd5.substring(0, 1) + File.separator + fileMd5.substring(1, 2) + File.separator + fileMd5 + File.separator + fileMd5 + "." + fileExt;
+        String filePath = uploadPath + fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/" + fileMd5 + "." + fileExt;
         return filePath;
     }
 
@@ -123,7 +123,7 @@ public class MediaUploadServiceImpl implements MediaUploadService {
      * @return
      */
     private String getFileFolderRelativePath(String fileMd5) {
-        String filePath = fileMd5.substring(0, 1) + File.separator + fileMd5.substring(1, 2) + File.separator + fileMd5 + File.separator;
+        String filePath = fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/";
         return filePath;
     }
 
@@ -158,7 +158,7 @@ public class MediaUploadServiceImpl implements MediaUploadService {
      * @return
      */
     private String getChunkFileFolderPath(String fileMd5) {
-        String fileChunkFolderPath = this.getFileFolderPath(fileMd5) + File.separator + "chunks" + File.separator;
+        String fileChunkFolderPath = this.getFileFolderPath(fileMd5) + "/" + "chunks" + "/";
         return fileChunkFolderPath;
     }
 
