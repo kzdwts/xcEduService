@@ -30,8 +30,11 @@
     - xc-service-manage-cms-client（学成在线客户端系统，主要实现接受mq消息生成cms文件到相关nginx映射目录）
     - xc-service-manage-course（学成在线课程管理系统，课程管理相关接口：课程发布、预览、新增）
     - xc-service-manage-media（学成在线媒资管理系统，主要实现文件断点续传，前端配合百度web uploader实现，后端将文件存储在MongoDB GridFS）
+    - xc-service-search（学成在线ES搜索系统）
+    
+    
     
 ## 参考文档
-[百度web uploader] (http://fex.baidu.com/webuploader/)
+* [百度web uploader文件上传](http://fex.baidu.com/webuploader/) 分片（断点续传）、分发 
 
 
