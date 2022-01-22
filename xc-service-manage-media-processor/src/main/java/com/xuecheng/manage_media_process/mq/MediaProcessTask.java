@@ -43,7 +43,7 @@ public class MediaProcessTask {
      *
      * @param msg
      */
-    @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}")
+    @RabbitListener(queues = "${xc-service-manage-media.mq.queue-media-video-processor}", containerFactory = "customContainerFactory")
     public void receiveMediaProcessTask(String msg) {
         log.info("===处理视频文件===START===");
         // 1、解析消息内容得到mediaId
