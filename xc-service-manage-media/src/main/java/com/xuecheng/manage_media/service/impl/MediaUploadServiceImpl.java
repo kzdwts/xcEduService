@@ -1,17 +1,20 @@
 package com.xuecheng.manage_media.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.media.MediaFile;
 import com.xuecheng.framework.domain.media.response.CheckChunkResult;
 import com.xuecheng.framework.domain.media.response.MediaCode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
+import com.xuecheng.manage_media.config.RabbitMQConfig;
 import com.xuecheng.manage_media.dao.MediaFileRepository;
 import com.xuecheng.manage_media.service.MediaUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,9 +37,16 @@ public class MediaUploadServiceImpl implements MediaUploadService {
     @Autowired
     private MediaFileRepository mediaFileRepository;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     // 上传文件保存路径
     @Value("${xc-service-manage-media.upload-location}")
     private String uploadPath;
+
+    // 发送消息到交换机的routingKey
+    @Value("${xc-service-manage-media.mq.routingkey-media-video}")
+    private String routingkeyMediaVideo;
 
     /**
      * 文件上传注册
@@ -60,6 +70,7 @@ public class MediaUploadServiceImpl implements MediaUploadService {
         // 2、查询数据库文件是否存在
         Optional<MediaFile> fileOptional = mediaFileRepository.findById(fileMd5);
         if (file.exists() && fileOptional.isPresent()) {
+            log.error("======文件已存在");
             ExceptionCast.cast(MediaCode.UPLOAD_FILE_REGISTER_EXIST);
         }
         // 创建文件夹
@@ -297,7 +308,39 @@ public class MediaUploadServiceImpl implements MediaUploadService {
         mediaFile.setFileStatus("301002");
         MediaFile save = mediaFileRepository.save(mediaFile);
 
+        // 发送视频处理消息
+        this.sendProcessVideoMsg(mediaFile.getFileId());
+
         return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    /**
+     * 发送mq视频文件处理消息
+     *
+     * @param fileId
+     * @return
+     */
+    public ResponseResult sendProcessVideoMsg(String fileId) {
+        // 查询是否有数据
+        Optional<MediaFile> mediaFileOptional = this.mediaFileRepository.findById(fileId);
+        if (!mediaFileOptional.isPresent()) {
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
+
+        // 参数准备
+        Map<String, String> map = new HashMap<>();
+        map.put("mediaId", fileId);
+        String jsonString = JSON.toJSONString(map);
+
+        try {
+            // 发送消息
+            this.rabbitTemplate.convertAndSend(RabbitMQConfig.EX_MEDIA_PROCESSTASK, routingkeyMediaVideo, jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("===mq消息，处理视频，发送失败");
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
+        return ResponseResult.SUCCESS();
     }
 
     /**
@@ -368,7 +411,7 @@ public class MediaUploadServiceImpl implements MediaUploadService {
             log.error("mergefileerror:{}", e.getMessage());
             return null;
         }
-        
+
         return mergeFile;
     }
 

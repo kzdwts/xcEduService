@@ -7,6 +7,12 @@ spring:
     mongodb:
       uri: mongodb://root:123@localhost:27017
       database: xc_media
+  rabbitmq:
+    host: 192.168.100.132
+    port: 5672
+    username: kangyong
+    password: kangyong
+    virtual-host: /
 eureka:
   client:
     register-with-eureka: true # 服务注册开关
@@ -25,3 +31,5 @@ ribbon:
   read-timeout: 6000 # 请求处理的超时时间
 xc-service-manage-media:
   upload-location: D:/data/video/
+  mq:
+    routingkey-media-video: routingkey-media-video
