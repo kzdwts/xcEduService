@@ -14,8 +14,8 @@ spring:
     password: kangyong
     virtual-host: /
 xc-service-manage-media:
-  upload-location: D:/data/video/
   mq:
     queue-media-video-processor: queue-media-video-processor
     routingkey-media-video: routingkey-media-video
   ffmpeg-path: C:/soft/ffmpeg/bin/ffmpeg.exe
+  upload-location: D:/data/video/

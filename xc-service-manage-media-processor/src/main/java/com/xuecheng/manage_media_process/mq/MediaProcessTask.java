@@ -1,6 +1,17 @@
 package com.xuecheng.manage_media_process.mq;
 
+import com.alibaba.fastjson.JSON;
+import com.xuecheng.framework.domain.media.MediaFile;
+import com.xuecheng.framework.domain.media.MediaFileProcess_m3u8;
+import com.xuecheng.framework.utils.Mp4VideoUtil;
+import com.xuecheng.manage_media_process.dao.MediaFileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * 媒体资源mq消息处理
@@ -9,7 +20,19 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
  * @date 2022/1/22
  * @since 1.0.0
  */
+@Slf4j
 public class MediaProcessTask {
+
+    @Autowired
+    private MediaFileRepository mediaFileRepository;
+
+    // ffmpeg地址
+    @Value("${xc-service-manage-media.ffmpeg-path}")
+    private String ffmpegPath;
+
+    // 上传文件根目录
+    @Value("${xc-service-manage-media.upload-location}")
+    private String uploadLocation;
 
     /**
      * 接收视频处理消息进行视频处理
@@ -18,6 +41,55 @@ public class MediaProcessTask {
      */
     @RabbitListener(queues = "${xc-service-manage-media.queue-media-video-processor}")
     public void receiveMediaProcessTask(String msg) {
+        // 1、解析消息内容得到mediaId
+        Map map = JSON.parseObject(msg, Map.class);
+        String mediaId = (String) map.get("mediaId");
+
+        // 2、根据mediaId查询文件信息
+        Optional<MediaFile> mediaFileOptional = this.mediaFileRepository.findById(mediaId);
+        if (!mediaFileOptional.isPresent()) {
+            log.info("没有查询到资源文件信息");
+            return;
+        }
+        MediaFile mediaFile = mediaFileOptional.get();
+
+        // 根据文件类型判断文件是否需要处理
+        String fileType = mediaFile.getFileType();
+        if (!fileType.equals("avi")) {
+            // ffmpeg目前只处理avi视频，其它视频暂不处理
+            mediaFile.setProcessStatus("303004"); // 无需处理
+            this.mediaFileRepository.save(mediaFile);
+            return;
+        } else {
+            mediaFile.setProcessStatus("303001");
+            this.mediaFileRepository.save(mediaFile);
+        }
+
+        // 3、调用工具类将avi文件转为mp4
+        // 要处理的MP4的路径
+        String videoPath = uploadLocation + mediaFile.getFilePath() + mediaFile.getFileName();
+        // 生成的MP4的文件名
+        String mp4Name = mediaFile.getFileId() + ".mp4";
+        // 生成的MP4所在的路径
+        String mp4folderPath = uploadLocation + mediaFile.getFilePath();
+        // 创建工具类对象
+        Mp4VideoUtil mp4VideoUtil = new Mp4VideoUtil(ffmpegPath, videoPath, mp4Name, mp4folderPath);
+        String mp4Result = mp4VideoUtil.generateMp4();
+        if (mp4Result == null || mp4Result.equals("success")) {
+            // 处理失败
+            log.info("avi转mp4处理失败");
+            mediaFile.setProcessStatus("303003");
+            // 记录失败原因
+            MediaFileProcess_m3u8 mediaFileProcessM3u8 = new MediaFileProcess_m3u8();
+            mediaFileProcessM3u8.setErrormsg(mp4Result);
+            mediaFile.setMediaFileProcess_m3u8(mediaFileProcessM3u8);
+
+            this.mediaFileRepository.save(mediaFile);
+            return;
+        }
+
+
+        // 4、将MP4转为m3u8和ts文件
 
     }
 }
