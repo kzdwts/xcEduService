@@ -1,5 +1,5 @@
 server:
-  port: 31450
+  port: ${PORT:31450}
 spring:
   application:
     name: xc-service-manage-media-processor
