@@ -4,6 +4,8 @@ import com.xuecheng.framework.domain.course.CoursePub;
 import com.xuecheng.framework.domain.search.CourseSearchParam;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 
+import java.util.Map;
+
 /**
  * 搜索 业务实现层
  *
@@ -22,4 +24,12 @@ public interface EsCourseService {
      * @return
      */
     QueryResponseResult<CoursePub> list(int page, int size, CourseSearchParam courseSearchParam);
+
+    /**
+     * 根据课程id查询课程信息
+     *
+     * @param id
+     * @return
+     */
+    Map<String, CoursePub> getall(String id);
 }

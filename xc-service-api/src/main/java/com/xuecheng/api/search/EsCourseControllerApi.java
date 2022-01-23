@@ -6,6 +6,8 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.Map;
+
 /**
  * 课程搜索接口定义
  *
@@ -18,4 +20,8 @@ public interface EsCourseControllerApi {
 
     @ApiOperation("课程搜索")
     QueryResponseResult<CoursePub> list(int page, int size, CourseSearchParam courseSearchParam);
+
+    @ApiOperation("根据课程id查询课程信息")
+    Map<String, CoursePub> getall(String id);
+
 }

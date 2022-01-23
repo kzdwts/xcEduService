@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * 搜索
  *
@@ -37,5 +39,17 @@ public class EsCourseController implements EsCourseControllerApi {
     @Override
     public QueryResponseResult<CoursePub> list(@PathVariable("page") int page, @PathVariable("size") int size, CourseSearchParam courseSearchParam) {
         return esCourseService.list(page, size, courseSearchParam);
+    }
+
+    /**
+     * 根据课程id查询课程信息
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/getall/{id}")
+    @Override
+    public Map<String, CoursePub> getall(String id) {
+        return esCourseService.getall(id);
     }
 }

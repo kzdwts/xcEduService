@@ -24,6 +24,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -161,5 +162,59 @@ public class EsCourseServiceImpl implements EsCourseService {
         }
 
         return null;
+    }
+
+    /**
+     * 根据课程id查询课程信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String, CoursePub> getall(String id) {
+        // 设置索引库
+        SearchRequest searchRequest = new SearchRequest(index);
+        // 设置类型
+        searchRequest.types(type);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // 查询条件，根据课程id查询
+        searchSourceBuilder.query(QueryBuilders.termsQuery("id", id));
+        // 取消source原字段过滤，查询所有字段
+        searchRequest.source(searchSourceBuilder);
+
+        // 执行搜索
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 获取搜索结果
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHits = hits.getHits();
+        Map<String, CoursePub> map = new HashMap<>();
+        for (SearchHit hit : searchHits) {
+            String courseId = hit.getId();
+            Map<String, Object> sourceAsMap = hit.getSourceAsMap();
+            String id1 = (String) sourceAsMap.get("id");
+            String name = (String) sourceAsMap.get("name");
+            String grade = (String) sourceAsMap.get("grade");
+            String charge = (String) sourceAsMap.get("charge");
+            String pic = (String) sourceAsMap.get("pic");
+            String description = (String) sourceAsMap.get("description");
+            String teachplan = (String) sourceAsMap.get("teachplan");
+
+            CoursePub coursePub = new CoursePub();
+            coursePub.setId(courseId);
+            coursePub.setName(name);
+            coursePub.setPic(pic);
+            coursePub.setGrade(grade);
+            coursePub.setTeachplan(teachplan);
+            coursePub.setDescription(description);
+            map.put(courseId, coursePub);
+        }
+
+        return map;
     }
 }
