@@ -10,6 +10,7 @@ import com.xuecheng.manage_media.service.MediaFileService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.stereotype.Service;
 
 /**
  * 媒资文件管理 业务实现层
@@ -18,6 +19,7 @@ import org.springframework.data.domain.*;
  * @date 2022/1/23
  * @since 1.0.0
  */
+@Service
 public class MediaFileServiceImpl implements MediaFileService {
 
     @Autowired
