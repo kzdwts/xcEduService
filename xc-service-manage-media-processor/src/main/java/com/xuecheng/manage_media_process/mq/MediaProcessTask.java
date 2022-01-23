@@ -120,6 +120,7 @@ public class MediaProcessTask {
         mediaFile.setMediaFileProcess_m3u8(mediaFileProcessM3u8);
         // fileUrl 就是客户端访问文件的路径
         String fileUrl = mediaFile.getFilePath() + "hls/" + m3u8Name;
+        mediaFile.setFileUrl(fileUrl);
         this.mediaFileRepository.save(mediaFile);
         log.info("===处理视频文件===END===");
     }
