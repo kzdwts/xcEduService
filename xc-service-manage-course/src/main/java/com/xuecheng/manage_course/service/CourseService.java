@@ -4,6 +4,7 @@ import com.xuecheng.framework.domain.cms.response.CoursePublishResult;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.TeachplanMedia;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.domain.course.response.AddCourseResult;
@@ -112,4 +113,12 @@ public interface CourseService {
      * @return
      */
     CoursePublishResult publish(String courseId);
+
+    /**
+     * 保存媒资信息
+     *
+     * @param teachplanMedia
+     * @return
+     */
+    ResponseResult savemedia(TeachplanMedia teachplanMedia);
 }

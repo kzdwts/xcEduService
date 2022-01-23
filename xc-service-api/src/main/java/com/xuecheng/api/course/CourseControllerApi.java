@@ -4,6 +4,7 @@ import com.xuecheng.framework.domain.cms.response.CoursePublishResult;
 import com.xuecheng.framework.domain.course.CourseBase;
 import com.xuecheng.framework.domain.course.CoursePic;
 import com.xuecheng.framework.domain.course.Teachplan;
+import com.xuecheng.framework.domain.course.TeachplanMedia;
 import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
@@ -54,5 +55,8 @@ public interface CourseControllerApi {
 
     @ApiOperation("课程发布")
     CoursePublishResult publish(String id);
+
+    @ApiOperation("保存媒资信息")
+    ResponseResult savemedia(TeachplanMedia teachplanMedia);
 
 }

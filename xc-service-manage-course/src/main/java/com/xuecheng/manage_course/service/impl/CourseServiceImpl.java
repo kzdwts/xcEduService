@@ -11,6 +11,7 @@ import com.xuecheng.framework.domain.course.ext.CourseInfo;
 import com.xuecheng.framework.domain.course.ext.TeachplanNode;
 import com.xuecheng.framework.domain.course.request.CourseListRequest;
 import com.xuecheng.framework.domain.course.response.AddCourseResult;
+import com.xuecheng.framework.domain.course.response.CourseCode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
@@ -23,7 +24,6 @@ import com.xuecheng.manage_course.service.CourseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -52,6 +52,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private TeachplanRepository teachplanRepository;
+
+    @Autowired
+    private TeachplanMediaRepository teachplanMediaRepository;
 
     @Autowired
     private TeachplanMapper teachplanMapper;
@@ -270,6 +273,52 @@ public class CourseServiceImpl implements CourseService {
         String pageUrl = cmsPostPageResult.getPageUrl();
 
         return new CoursePublishResult(CommonCode.SUCCESS, pageUrl);
+    }
+
+    /**
+     * 保存媒资信息
+     *
+     * @param teachplanMedia
+     * @return
+     */
+    @Override
+    public ResponseResult savemedia(TeachplanMedia teachplanMedia) {
+        // 参数判断
+        if (teachplanMedia == null) {
+            ExceptionCast.cast(CommonCode.INVALIDATE_PARAM);
+        }
+
+        // 课程计划
+        String teachplanId = teachplanMedia.getTeachplanId();
+
+        // 查询课程计划
+        Optional<Teachplan> teachplanOptional = this.teachplanRepository.findById(teachplanId);
+        if (!teachplanOptional.isPresent()) {
+            ExceptionCast.cast(CourseCode.COURSE_MEDIS_URLISNULL);
+        }
+        Teachplan teachplan = teachplanOptional.get();
+        // 自允许为子节点课程选择视频
+        String grade = teachplan.getGrade();
+        if (org.springframework.util.StringUtils.isEmpty(grade) || !grade.equals("3")) {
+            ExceptionCast.cast(CourseCode.COURSE_MEDIA_TEACHPLAN_GRADEERROR);
+        }
+        TeachplanMedia one = null;
+        Optional<TeachplanMedia> teachplanMediaOptional = this.teachplanMediaRepository.findById(teachplanId);
+        if (teachplanMediaOptional.isPresent()) {
+            one = teachplanMediaOptional.get();
+        } else {
+            one = new TeachplanMedia();
+        }
+
+        // 保存媒资信息与课程计划信息
+        one.setTeachplanId(teachplanId);
+        one.setCourseId(teachplanMedia.getCourseId());
+        one.setMediaFileOriginalName(teachplanMedia.getMediaFileOriginalName());
+        one.setMediaId(teachplanMedia.getMediaId());
+        one.setMediaUrl(teachplanMedia.getMediaUrl());
+        this.teachplanMediaRepository.save(one);
+
+        return new ResponseResult(CommonCode.SUCCESS);
     }
 
     /**
