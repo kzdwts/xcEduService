@@ -30,6 +30,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +56,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private TeachplanMediaRepository teachplanMediaRepository;
+
+    @Autowired
+    private TeachplanMediaPubRepository teachplanMediaPubRepository;
 
     @Autowired
     private TeachplanMapper teachplanMapper;
@@ -272,7 +276,31 @@ public class CourseServiceImpl implements CourseService {
         // 页面url
         String pageUrl = cmsPostPageResult.getPageUrl();
 
+        // 保存媒资文件发布信息
+        this.saveTeachplanMediaPub(courseId);
+
         return new CoursePublishResult(CommonCode.SUCCESS, pageUrl);
+    }
+
+    /**
+     * 保存课程计划媒资信息
+     *
+     * @param courseId
+     */
+    private void saveTeachplanMediaPub(String courseId) {
+        // 查询课程媒资信息
+        List<TeachplanMedia> teachplanMediaList = this.teachplanMediaRepository.findByCourseId(courseId);
+        // 将课程计划媒资信息存储待索引表
+        this.teachplanMediaPubRepository.deleteByCourseId(courseId);
+
+        List<TeachplanMediaPub> teachplanMediaPubList = new ArrayList<>();
+        for (TeachplanMedia teachplanMedia : teachplanMediaList) {
+            TeachplanMediaPub teachplanMediaPub = new TeachplanMediaPub();
+            BeanUtils.copyProperties(teachplanMedia, teachplanMediaPub);
+            teachplanMediaPubList.add(teachplanMediaPub);
+        }
+
+        this.teachplanMediaPubRepository.saveAll(teachplanMediaPubList);
     }
 
     /**
@@ -420,7 +448,7 @@ public class CourseServiceImpl implements CourseService {
         cmsPage.setTemplateId(coursePublishProperties.getTemplateId());
         cmsPage.setPageWebPath(coursePublishProperties.getPageWebPath());
         cmsPage.setPagePhysicalPath(coursePublishProperties.getPagePhysicalPath());
-        cmsPage.setDataUrl(coursePublishProperties.getDataUrlPre());
+        cmsPage.setDataUrl(coursePublishProperties.getDataUrlPre() + courseBase.getId());
 
         // 发布页面
         CmsPostPageResult cmsPostPageResult = this.cmsPageClient.postPageQuick(cmsPage);

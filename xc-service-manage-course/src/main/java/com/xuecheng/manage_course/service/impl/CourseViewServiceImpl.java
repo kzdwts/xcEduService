@@ -51,6 +51,7 @@ public class CourseViewServiceImpl implements CourseViewService {
         Optional<CourseBase> courseBaseOptional = this.courseBaseRepository.findById(courseId);
         if (courseBaseOptional.isPresent()) {
             CourseBase courseBase = courseBaseOptional.get();
+            viewCourse.setId(courseBase.getId());
             viewCourse.setCourseBase(courseBase);
         }
 

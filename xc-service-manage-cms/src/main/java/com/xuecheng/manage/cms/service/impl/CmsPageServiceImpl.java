@@ -160,7 +160,7 @@ public class CmsPageServiceImpl implements CmsPageService {
         CmsPage cmsPageExists = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
         if (cmsPageExists != null) {
             // 更新
-            return this.edit(cmsPage.getPageId(), cmsPage);
+            return this.edit(cmsPageExists.getPageId(), cmsPage);
         } else {
             // 添加
             return this.add(cmsPage);
@@ -186,7 +186,7 @@ public class CmsPageServiceImpl implements CmsPageService {
         existsCmsPage.setDataUrl(cmsPage.getDataUrl());
 
         // 更新
-        CmsPage savedCmsPage = cmsPageRepository.save(cmsPage);
+        CmsPage savedCmsPage = cmsPageRepository.save(existsCmsPage);
         if (ObjectUtils.isEmpty(savedCmsPage)) {
             // 如果为空，直接返回错误信息
 //            return new CmsPageResult(CommonCode.FAIL, null);
@@ -259,7 +259,7 @@ public class CmsPageServiceImpl implements CmsPageService {
         CmsPage cmsPageSave = cmsPageResult.getCmsPage();
 
         // 2、执行页面发布（先静态化，保存GridFS，发送mq消息）
-        ResponseResult responseResult = this.postPage(cmsPage.getPageId());
+        ResponseResult responseResult = this.postPage(cmsPageSave.getPageId());
         if (!responseResult.isSuccess()) {
             ExceptionCast.cast(CommonCode.FAIL);
         }
@@ -357,6 +357,7 @@ public class CmsPageServiceImpl implements CmsPageService {
             stringTemplateLoader.putTemplate("template", templateContent);
             // 配置模板加载器
             configuration.setTemplateLoader(stringTemplateLoader);
+            log.info("===模板信息：{}", templateContent);
 
             // 获取模板
             Template template = configuration.getTemplate("template");
@@ -435,7 +436,7 @@ public class CmsPageServiceImpl implements CmsPageService {
         }
 
         // 根据dataUrl获取数据
-        ResponseEntity<Map> entity = restTemplate.getForEntity(dataUrl, Map.class);
+        ResponseEntity<Map> entity = restTemplate.getForEntity(dataUrl , Map.class);
         Map body = entity.getBody();
         return body;
     }
