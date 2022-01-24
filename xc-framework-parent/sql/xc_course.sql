@@ -2,7 +2,8 @@
 SQLyog v10.2 
 MySQL - 5.7.21-log : Database - xc_course
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -228,3 +229,16 @@ insert  into `teachplan_media`(`teachplan_id`,`media_id`,`media_fileoriginalname
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+# 课程计划媒资发布表
+CREATE TABLE `teachplan_media_pub`
+(
+    `teachplan_id`           VARCHAR(32)  NOT NULL COMMENT '课程计划id',
+    `media_id`               VARCHAR(32)  NOT NULL COMMENT '媒资文件id',
+    `media_fileoriginalname` VARCHAR(128) NOT NULL COMMENT '媒资文件的原始名称',
+    `media_url`              VARCHAR(256) NOT NULL COMMENT '媒资文件访问地址',
+    `courseid`               VARCHAR(32)  NOT NULL COMMENT '课程Id',
+    `timestamp`              TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'logstash使用',
+    PRIMARY KEY (`teachplan_id`)
+) ENGINE = INNODB
+  DEFAULT CHARSET = utf8 COMMENT '课程计划媒资发布表';
