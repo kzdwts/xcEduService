@@ -207,6 +207,8 @@ public class CourseServiceImpl implements CourseService {
         }
         coursePic.setCourseid(courseId);
         coursePic.setPic(pic);
+        coursePic.setCreateTime(new Date());
+        this.coursePicRepository.save(coursePic);
 
         return new ResponseResult(CommonCode.SUCCESS);
     }

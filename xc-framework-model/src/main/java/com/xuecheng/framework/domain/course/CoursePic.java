@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by admin on 2018/2/10.
@@ -22,5 +23,8 @@ public class CoursePic implements Serializable {
     @GeneratedValue(generator = "jpa-assigned")
     private String courseid;
     private String pic;
+
+    @Column(name = "create_time")
+    private Date createTime;
 
 }

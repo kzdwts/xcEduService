@@ -1,6 +1,7 @@
 package com.xuecheng.file_system.config;
 
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 // 第二种加载配置文件，不用再启动类加注解，是把这个类加载到spring容器
 
 @Data
+@ToString
 @Component
 @ConfigurationProperties(prefix = "xuecheng.fastdfs")
 public class FastDFSProperties {
