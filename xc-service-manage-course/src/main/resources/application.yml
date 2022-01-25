@@ -50,7 +50,8 @@ ribbon:
 # 课程发布
 course-publish:
   siteId: 5b30cba5f58b4411fc6cb1e5
-  templateId: 5ad9a24d68db5239b8fef199
+#  templateId: 5ad9a24d68db5239b8fef199
+  templateId: 5a925be7b00ffc4b3c188888
   previewUrl: http://www.xuecheng.com/cms/preview/
   pageWebPath: /course/detail/
   pagePhysicalPath: /course/detail/

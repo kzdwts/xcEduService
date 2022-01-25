@@ -350,6 +350,7 @@ public class CmsPageServiceImpl implements CmsPageService {
      */
     private String generateHtml(String templateContent, Map model) {
         try {
+            log.info("===模板信息：{}", templateContent);
             // 生成配置类
             Configuration configuration = new Configuration(Configuration.getVersion());
             // 模板加载器
@@ -357,7 +358,6 @@ public class CmsPageServiceImpl implements CmsPageService {
             stringTemplateLoader.putTemplate("template", templateContent);
             // 配置模板加载器
             configuration.setTemplateLoader(stringTemplateLoader);
-            log.info("===模板信息：{}", templateContent);
 
             // 获取模板
             Template template = configuration.getTemplate("template");
