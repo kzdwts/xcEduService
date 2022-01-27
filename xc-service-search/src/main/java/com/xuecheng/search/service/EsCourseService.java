@@ -1,6 +1,7 @@
 package com.xuecheng.search.service;
 
 import com.xuecheng.framework.domain.course.CoursePub;
+import com.xuecheng.framework.domain.course.TeachplanMediaPub;
 import com.xuecheng.framework.domain.search.CourseSearchParam;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 
@@ -32,4 +33,14 @@ public interface EsCourseService {
      * @return
      */
     Map<String, CoursePub> getall(String id);
+
+    /**
+     * 根据课程计划查询媒资信息
+     *
+     * @param teachplanIds {@link String[]}
+     * @return {@link QueryResponseResult< TeachplanMediaPub>}
+     * @author Kang Yong
+     * @date 2022/1/27
+     */
+    QueryResponseResult<TeachplanMediaPub> getmedia(String[] teachplanIds);
 }
