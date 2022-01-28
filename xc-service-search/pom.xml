@@ -39,6 +39,11 @@
             <artifactId>elasticsearch</artifactId>
             <version>6.2.1</version>
         </dependency>
+        <!--eureka-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
 
         <!--学成相关依赖-->
         <dependency>
