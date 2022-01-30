@@ -32,6 +32,7 @@
     - xc-service-manage-media（学成在线媒资管理系统，主要实现文件断点续传，前端配合百度web uploader实现，后端将文件存储在MongoDB GridFS）
     - xc-service-search（学成在线ES搜索系统）
     - xc-service-manage-media-processor（学成在线媒资管理子系统，接受文件上传mq消息，处理视频）
+    - xc-service-learning（学成在线学习工程。主要查询媒资文件访问路径）
     
     
 ## 参考文档
