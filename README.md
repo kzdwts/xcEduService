@@ -33,6 +33,7 @@
     - xc-service-search（学成在线ES搜索系统）
     - xc-service-manage-media-processor（学成在线媒资管理子系统，接受文件上传mq消息，处理视频）
     - xc-service-learning（学成在线学习工程。主要查询媒资文件访问路径）
+    - xc-service-ucenter-auth（学成在线用户认证工程）
     
     
 ## 参考文档
