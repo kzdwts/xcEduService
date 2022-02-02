@@ -6,7 +6,7 @@ spring:
   application:
     name: xc-service-ucenter-auth
   redis:
-    host: ${REDIS_HOST:127.0.0.1}
+    host: ${REDIS_HOST:192.168.100.132}
     port: ${REDIS_PORT:6379}
     timeout: 5000 #连接超时 毫秒
     jedis:
