@@ -1,6 +1,7 @@
 package com.xuecheng.auth.service.impl;
 
 import com.xuecheng.auth.service.AuthService;
+import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,20 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    // 认证方法
-
+    /**
+     * 用户登录
+     *
+     * @param username     {@link String} 用户账号
+     * @param password     {@link String} 密码
+     * @param clientId     {@link String} 客户端id
+     * @param clientSecret {@link String} 客户端秘钥
+     * @return {@link AuthToken}
+     * @author Kang Yong
+     * @date 2022/2/5
+     */
+    @Override
+    public AuthToken login(String username, String password, String clientId, String clientSecret) {
+        return null;
+    }
 
 }
