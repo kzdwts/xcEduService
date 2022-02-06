@@ -1,5 +1,6 @@
 package com.xuecheng.framework.domain.course;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,6 +25,7 @@ public class CoursePic implements Serializable {
     private String courseid;
     private String pic;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
     private Date createTime;
 

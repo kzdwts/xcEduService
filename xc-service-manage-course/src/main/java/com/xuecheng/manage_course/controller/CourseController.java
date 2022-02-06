@@ -137,7 +137,7 @@ public class CourseController implements CourseControllerApi {
      */
     @Override
     @GetMapping("/coursepic/list/{courseId}")
-    public CoursePic findCoursePic(String courseId) {
+    public CoursePic findCoursePic(@PathVariable("courseId") String courseId) {
         return courseService.findCoursePic(courseId);
     }
 
