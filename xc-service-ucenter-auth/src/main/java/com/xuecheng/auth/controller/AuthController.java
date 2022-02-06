@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/auth")
 public class AuthController implements AuthControllerApi {
 
     @Value("${auth.clientId}")
