@@ -5,6 +5,7 @@ import com.xuecheng.auth.service.AuthService;
 import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.request.LoginRequest;
 import com.xuecheng.framework.domain.ucenter.response.AuthCode;
+import com.xuecheng.framework.domain.ucenter.response.JwtResult;
 import com.xuecheng.framework.domain.ucenter.response.LoginResult;
 import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
@@ -14,12 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * 用户认证控制层
@@ -104,6 +108,45 @@ public class AuthController implements AuthControllerApi {
     @PostMapping("/userlogout")
     @Override
     public ResponseResult logout() {
+        return null;
+    }
+
+    /**
+     * 查询userJwt令牌
+     *
+     * @return {@link JwtResult}
+     * @author Kang Yong
+     * @date 2022/2/7
+     */
+    @Override
+    @GetMapping("/userjwt")
+    public JwtResult userjwt() {
+        // 获取cookie中的令牌
+        String uid = this.getTokenFormCookie();
+        if (uid == null) {
+            return new JwtResult(CommonCode.FAIL, null);
+        }
+
+        // 用身份令牌从redis查询jwt信息
+        AuthToken authToken = this.authService.getUserToken(uid);
+        if (authToken == null) {
+            return new JwtResult(CommonCode.FAIL, null);
+        }
+        return new JwtResult(CommonCode.SUCCESS, authToken.getJwt_token());
+    }
+
+    /**
+     * 从cookie中读取访问令牌
+     *
+     * @return
+     */
+    private String getTokenFormCookie() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Map<String, String> map = CookieUtil.readCookie(request, "uid");
+        if (map != null && map.get("uid") != null) {
+            String uid = map.get("uid");
+            return uid;
+        }
         return null;
     }
 }

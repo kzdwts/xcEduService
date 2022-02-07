@@ -23,4 +23,14 @@ public interface AuthService {
      * @date 2022/2/5
      */
     AuthToken login(String username, String password, String clientId, String clientSecret);
+
+    /**
+     * 根据客户端token 从redis查询jwt令牌
+     *
+     * @param token {@link String}
+     * @return {@link AuthToken}
+     * @author Kang Yong
+     * @date 2022/2/7
+     */
+    AuthToken getUserToken(String token);
 }

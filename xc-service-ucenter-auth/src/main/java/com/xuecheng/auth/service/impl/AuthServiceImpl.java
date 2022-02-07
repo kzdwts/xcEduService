@@ -83,6 +83,25 @@ public class AuthServiceImpl implements AuthService {
     }
 
     /**
+     * 根据客户端token 从redis查询jwt令牌
+     *
+     * @param token {@link String}
+     * @return {@link AuthToken}
+     * @author Kang Yong
+     * @date 2022/2/7
+     */
+    @Override
+    public AuthToken getUserToken(String token) {
+        String userToken = "user_token:" + token;
+        String userTokenStr = this.stringRedisTemplate.opsForValue().get(userToken);
+        if (userTokenStr != null) {
+            AuthToken authToken = JSON.parseObject(userTokenStr, AuthToken.class);
+            return authToken;
+        }
+        return null;
+    }
+
+    /**
      * 保存token到redis缓存
      *
      * @param access_token
