@@ -1,5 +1,6 @@
 package com.xuecheng.framework.domain.ucenter;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +14,7 @@ import java.util.Date;
 @Data
 @ToString
 @Entity
-@Table(name="xc_user")
+@Table(name = "xc_user")
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class XcUser {
 
@@ -22,6 +23,9 @@ public class XcUser {
     @Column(length = 32)
     private String id;
     private String username;
+
+    //    @JsonIgnore
+//    将密码返回是为了把密码给springsecurity，其内部会自动比对密码正确性
     private String password;
     private String salt;
     private String name;
@@ -32,9 +36,13 @@ public class XcUser {
     private String email;
     private String phone;
     private String status;
-    @Column(name="create_time")
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "create_time")
     private Date createTime;
-    @Column(name="update_time")
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "update_time")
     private Date updateTime;
 
 
