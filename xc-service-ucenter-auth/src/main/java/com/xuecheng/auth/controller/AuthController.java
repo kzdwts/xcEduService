@@ -10,11 +10,11 @@ import com.xuecheng.framework.exception.ExceptionCast;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.framework.utils.CookieUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2022/2/2
  * @since 1.0.0
  */
+@Slf4j
 @RestController
 public class AuthController implements AuthControllerApi {
 
@@ -76,6 +77,7 @@ public class AuthController implements AuthControllerApi {
         String access_token = authToken.getAccess_token();
         // 将令牌存储到cookie
         this.saveCookie(access_token);
+        log.info("===登录成功");
         return new LoginResult(CommonCode.SUCCESS, access_token);
     }
 

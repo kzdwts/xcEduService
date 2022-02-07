@@ -7,6 +7,7 @@ import com.xuecheng.framework.domain.ucenter.ext.AuthToken;
 import com.xuecheng.framework.domain.ucenter.response.AuthCode;
 import com.xuecheng.framework.exception.ExceptionCast;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -147,14 +148,27 @@ public class AuthServiceImpl implements AuthService {
         } catch (RestClientException e) {
             e.printStackTrace();
             log.error("request oauth_token_password error:{}", e.getMessage());
-            ExceptionCast.cast(AuthCode.AUTH_LOGIN_ERROR);
+            ExceptionCast.cast(AuthCode.AUTH_LOGIN_APPLYTOKEN_FAIL);
         }
 
         if (map == null
                 || map.get("access_token") == null
                 || map.get("refresh_token") == null
                 || map.get("jti") == null) {
-            ExceptionCast.cast(AuthCode.AUTH_LOGIN_ERROR);
+            // 获取spring security返回的错误信息
+            String error_description = (String) map.get("error_description");
+            if (StringUtils.isNotEmpty(error_description)) {
+                if (error_description.equals("坏的凭证")) {
+                    log.error("===账号或密码错误：{}", error_description);
+                    ExceptionCast.cast(AuthCode.AUTH_CREDENTIAL_ERROR);
+                } else if (error_description.indexOf("UserDetailsService returned null") > 0) {
+                    log.error("===账号不存在：{}", error_description);
+                    ExceptionCast.cast(AuthCode.AUTH_ACCOUNT_NOTEXISTS);
+                }
+            }
+
+            log.error("===申请token失败：{}", error_description);
+            ExceptionCast.cast(AuthCode.AUTH_LOGIN_APPLYTOKEN_FAIL);
         }
 
         AuthToken authToken = new AuthToken();
