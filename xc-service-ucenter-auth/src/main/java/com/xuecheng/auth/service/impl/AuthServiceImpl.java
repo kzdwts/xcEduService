@@ -102,6 +102,22 @@ public class AuthServiceImpl implements AuthService {
     }
 
     /**
+     * 删除redis中的token
+     *
+     * @param access_token {@link String}
+     * @author Kang Yong
+     * @date 2022/2/8
+     */
+    @Override
+    public boolean delToken(String access_token) {
+        // 令牌名称
+        String name = "user_token:" + access_token;
+        boolean b = stringRedisTemplate.delete(name);
+        log.info("===清除token成功");
+        return b;
+    }
+
+    /**
      * 保存token到redis缓存
      *
      * @param access_token

@@ -33,4 +33,13 @@ public interface AuthService {
      * @date 2022/2/7
      */
     AuthToken getUserToken(String token);
+
+    /**
+     * 删除redis中的token
+     *
+     * @param token {@link String}
+     * @author Kang Yong
+     * @date 2022/2/8
+     */
+    boolean delToken(String token);
 }
