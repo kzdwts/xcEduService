@@ -63,6 +63,7 @@ public class LoginFilter extends ZuulFilter {
             // 拒绝访问
             log.error("======获取cookie token 异常");
             this.accessDenied();
+            return null;
         }
 
         // 校验令牌是否过期
@@ -71,6 +72,7 @@ public class LoginFilter extends ZuulFilter {
             // 拒绝访问
             log.error("======token已过期");
             this.accessDenied();
+            return null;
         }
 
         // 查询jwt令牌
@@ -79,6 +81,7 @@ public class LoginFilter extends ZuulFilter {
             // 拒绝访问
             log.error("======获取header token异常");
             this.accessDenied();
+            return null;
         }
         return null;
     }

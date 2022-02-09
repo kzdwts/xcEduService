@@ -4,13 +4,14 @@ import com.google.common.collect.ImmutableMap;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.framework.model.response.ResultCode;
-import jdk.nashorn.internal.objects.NativeUint8Array;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.nio.file.AccessDeniedException;
 
 /**
  * 全局异常捕获类
@@ -26,7 +27,9 @@ public class ExceptionCatch {
 
     static {
         // 非法参数异常
-        builder.put(HttpMessageNotReadableException.class, CommonCode.INVALIDATE_PARAM);
+//        builder.put(HttpMessageNotReadableException.class, CommonCode.INVALIDATE_PARAM);
+        // 权限不足
+        builder.put(AccessDeniedException.class, CommonCode.UNAUTHORISE);
     }
 
     /**

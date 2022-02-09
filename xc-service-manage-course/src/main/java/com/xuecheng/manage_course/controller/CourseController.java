@@ -95,8 +95,9 @@ public class CourseController implements CourseControllerApi {
      * @param courseId
      * @return
      */
-    @Override
+    @PreAuthorize("hasAuthority('course_get_baseinfo')")
     @GetMapping("/coursebase/get/{courseId}")
+    @Override
     public CourseBase getCourseBaseById(@PathVariable("courseId") String courseId) {
         return courseService.getCoursebaseById(courseId);
     }
