@@ -97,7 +97,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/swagger-resources",
                         "/swagger-resources/configuration/security",
                         "/swagger-ui.html",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/course/coursepic/list/*"
                 ).permitAll()
                 .anyRequest().authenticated();
     }
