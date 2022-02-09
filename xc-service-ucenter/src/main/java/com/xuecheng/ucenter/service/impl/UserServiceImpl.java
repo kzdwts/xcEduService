@@ -1,15 +1,19 @@
 package com.xuecheng.ucenter.service.impl;
 
 import com.xuecheng.framework.domain.ucenter.XcCompanyUser;
+import com.xuecheng.framework.domain.ucenter.XcMenu;
 import com.xuecheng.framework.domain.ucenter.XcUser;
 import com.xuecheng.framework.domain.ucenter.ext.XcUserExt;
 import com.xuecheng.ucenter.dao.XcCompanyUserRepository;
+import com.xuecheng.ucenter.dao.XcMenuMapper;
 import com.xuecheng.ucenter.dao.XcUserRepository;
 import com.xuecheng.ucenter.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 用户管理
@@ -27,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private XcCompanyUserRepository companyUserRepository;
+
+    @Autowired
+    private XcMenuMapper xcMenuMapper;
 
     /**
      * 根据用户账号查询用户信息
@@ -65,6 +72,11 @@ public class UserServiceImpl implements UserService {
         if (xcCompanyUser != null) {
             xcUserExt.setCompanyId(xcCompanyUser.getCompanyId());
         }
+
+        // 权限信息
+        List<XcMenu> xcMenuList = this.xcMenuMapper.selectPermissionByUserId(xcUser.getId());
+        xcUserExt.setPermissions(xcMenuList);
+
         return xcUserExt;
     }
 }

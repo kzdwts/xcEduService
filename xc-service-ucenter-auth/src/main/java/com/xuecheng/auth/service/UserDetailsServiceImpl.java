@@ -59,9 +59,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<XcMenu> permissions = CollectionUtils.isEmpty(userext.getPermissions()) ? new ArrayList<>() : userext.getPermissions();
         List<String> user_permission = new ArrayList<>();
         permissions.forEach(item -> user_permission.add(item.getCode()));
-        user_permission.add("course_get_baseinfo");
-        user_permission.add("course_find_pic");
-        user_permission.add("course_find_list");
+//        user_permission.add("course_get_baseinfo");
+//        user_permission.add("course_find_pic");
+//        user_permission.add("course_find_list");
         String user_permission_string = StringUtils.join(user_permission.toArray(), ",");
         UserJwt userDetails = new UserJwt(username,
                 password,
