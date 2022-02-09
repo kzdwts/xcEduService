@@ -14,6 +14,7 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -66,8 +67,9 @@ public class CourseController implements CourseControllerApi {
      * @param courseListRequest
      * @return
      */
-    @Override
+    @PreAuthorize("hasAuthority('course_find_list')")
     @GetMapping("/coursebase/list/{page}/{size}")
+    @Override
     public QueryResponseResult<CourseInfo> findCourseList(
             @PathVariable("page") Integer page,
             @PathVariable("size") Integer size,
