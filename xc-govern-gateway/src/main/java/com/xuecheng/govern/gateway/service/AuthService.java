@@ -20,4 +20,25 @@ public interface AuthService {
      * @date 2022/2/9
      */
     String getTokenFromCookie(HttpServletRequest request);
+
+    /**
+     * 从header中查询jwt令牌
+     *
+     * @param request {@link HttpServletRequest}
+     * @return {@link String}
+     * @author Kang Yong
+     * @date 2022/2/9
+     */
+    String getJwtFromHeader(HttpServletRequest request);
+
+    /**
+     * 查询令牌的有效期
+     *
+     * @param access_token {@link String}
+     * @return {@link Long}
+     * @author Kang Yong
+     * @date 2022/2/9
+     */
+    Long getExpire(String access_token);
+
 }

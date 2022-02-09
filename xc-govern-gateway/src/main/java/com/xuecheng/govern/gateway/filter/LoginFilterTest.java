@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0.0
  */
 @Slf4j
-@Component
+//@Component
 public class LoginFilterTest extends ZuulFilter {
 
     @Override
