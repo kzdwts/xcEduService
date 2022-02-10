@@ -1,5 +1,6 @@
 package com.xuecheng.manage_course;
 
+import com.xuecheng.framework.interceptor.FeignClientInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -28,10 +29,25 @@ public class ManageCourseApplication {
         SpringApplication.run(ManageCourseApplication.class, args);
     }
 
+    /**
+     * 远程调用
+     *
+     * @return
+     */
     @Bean
     @LoadBalanced // 开启客户端负载均衡
     public RestTemplate restTemplate() {
         return new RestTemplate(new OkHttp3ClientHttpRequestFactory());
+    }
+
+    /**
+     * 拦截器
+     *
+     * @return
+     */
+    @Bean
+    public FeignClientInterceptor feignClientInterceptor() {
+        return new FeignClientInterceptor();
     }
 
 }
