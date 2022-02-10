@@ -14,6 +14,8 @@ import com.xuecheng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 课程管理控制层
  *
@@ -31,7 +33,7 @@ public interface CourseControllerApi {
     ResponseResult addTeachplan(Teachplan teachplan);
 
     @ApiOperation("查询课程列表")
-    QueryResponseResult<CourseInfo> findCourseList(Integer page, Integer size, CourseListRequest courseListRequest);
+    QueryResponseResult<CourseInfo> findCourseList(Integer page, Integer size, CourseListRequest courseListRequest, HttpServletRequest request);
 
     @ApiOperation("添加课程基础信息")
     AddCourseResult addCourseBase(CourseBase courseBase);

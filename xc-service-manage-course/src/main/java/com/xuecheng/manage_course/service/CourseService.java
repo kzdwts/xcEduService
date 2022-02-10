@@ -43,12 +43,14 @@ public interface CourseService {
     /**
      * 查询课程列表
      *
+     *
+     * @param companyId
      * @param pageNum           当前页
      * @param pageSize          每页条数
      * @param courseListRequest 查询条件
      * @return
      */
-    QueryResponseResult findCourseList(Integer pageNum, Integer pageSize, CourseListRequest courseListRequest);
+    QueryResponseResult findCourseList(String companyId, Integer pageNum, Integer pageSize, CourseListRequest courseListRequest);
 
     /**
      * 添加课程基础信息

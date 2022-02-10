@@ -36,5 +36,5 @@ public interface CourseMapper {
      * @param courseListRequest
      * @return
      */
-    Page<CourseInfo> findCoursePaageList(CourseListRequest courseListRequest);
+    Page<CourseInfo> findCoursePageList(CourseListRequest courseListRequest);
 }

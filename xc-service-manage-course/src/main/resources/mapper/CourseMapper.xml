@@ -12,7 +12,8 @@
     <select id="findPageList" resultType="com.xuecheng.framework.domain.course.CourseBase">
         select * from course_base
     </select>
-    <select id="findCoursePaageList" resultType="com.xuecheng.framework.domain.course.ext.CourseInfo">
+
+    <select id="findCoursePageList" resultType="com.xuecheng.framework.domain.course.ext.CourseInfo">
         SELECT
             course_base.*,
             (
@@ -20,5 +21,10 @@
             ) pic
         FROM
             course_base
+        WHERE
+            1=1
+            <if test="companyId != null and companyId != ''">
+                AND course_base.company_id=#{companyId}
+            </if>
     </select>
 </mapper>

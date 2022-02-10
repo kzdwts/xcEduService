@@ -127,17 +127,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public QueryResponseResult findCourseList(Integer pageNum, Integer pageSize, CourseListRequest courseListRequest) {
+    public QueryResponseResult findCourseList(String companyId, Integer pageNum, Integer pageSize, CourseListRequest courseListRequest) {
         if (courseListRequest == null) {
             courseListRequest = new CourseListRequest();
         }
         if (pageNum <= 0) pageNum = 0;
         if (pageSize <= 0) pageSize = 20;
 
+        // 条件
+        courseListRequest.setCompanyId(companyId);
+
         // 分页
         PageHelper.startPage(pageNum, pageSize);
         // 查询
-        Page<CourseInfo> courseInfoPage = this.courseMapper.findCoursePaageList(courseListRequest);
+        Page<CourseInfo> courseInfoPage = this.courseMapper.findCoursePageList(courseListRequest);
         QueryResult<CourseInfo> courseInfoQueryResult = new QueryResult<>();
         courseInfoQueryResult.setList(courseInfoPage.getResult());
         courseInfoQueryResult.setTotal(courseInfoPage.getTotal());
