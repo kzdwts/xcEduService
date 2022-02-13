@@ -24,4 +24,15 @@ public interface XcTaskService {
      * @date 2022/2/13
      */
     List<XcTask> findXcTaskList(Date updateTime, int size);
+
+    /**
+     * 发送mq消息
+     *
+     * @param xcTask     {@link XcTask} 任务内容
+     * @param ex         {@link String} 交换机
+     * @param routingKey {@link String}
+     * @author Kang Yong
+     * @date 2022/2/13
+     */
+    void publish(XcTask xcTask, String ex, String routingKey);
 }

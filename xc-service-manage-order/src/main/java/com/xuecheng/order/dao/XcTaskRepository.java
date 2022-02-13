@@ -5,6 +5,9 @@ import com.xuecheng.framework.domain.task.XcTask;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -28,4 +31,17 @@ public interface XcTaskRepository extends JpaRepository<XcTask, String> {
      * @date 2022/2/13
      */
     Page<XcTask> findByUpdateTimeBefore(Pageable pageable, Date updateTime);
+
+    /**
+     * 修改任务的更新时间
+     *
+     * @param taskId     {@link String} 任务id
+     * @param updateTIme {@link Date} 更新时间
+     * @return {@link int}
+     * @author Kang Yong
+     * @date 2022/2/13
+     */
+    @Modifying
+    @Query("update XcTask xt set xt.updateTime=:updateTime where xt.id=:taskId")
+    int updateTaskTime(@Param("taskId") String taskId, @Param("updateTime") Date updateTIme);
 }

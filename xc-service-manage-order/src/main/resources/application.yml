@@ -20,7 +20,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        format_sql: false
+        format_sql: true
         show_sql: true
   rabbitmq:
     host: 192.168.100.132
@@ -28,13 +28,18 @@ spring:
     username: kangyong
     password: kangyong
     virtual-host: /
+
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
 logging:
   level:
-    com.xuecheng.ucenter.dao: trace
+    com.xuecheng.order.dao: debug
+    org.hibernate.SQL: debug
+    org.hibernate.engine.QueryParameters: debug
+    org.hibernate.engine.query.HQLQueryPlan: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: debug
 pagehelper:
   # sql方言
   helper-dialect: mysql

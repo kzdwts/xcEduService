@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -43,8 +44,17 @@ public class ChooseCourseTask {
         Date time = calendar.getTime();
         // 查询
         List<XcTask> xcTaskList = this.xcTaskService.findXcTaskList(time, 10);
-        System.out.println("xcTaskList.size()" + xcTaskList.size());
-        xcTaskList.forEach(System.out::println);
+//        System.out.println("xcTaskList.size()" + xcTaskList.size());
+//        xcTaskList.forEach(System.out::println);
+        if (!CollectionUtils.isEmpty(xcTaskList)) {
+            for (XcTask xcTask : xcTaskList) {
+                String exchange = xcTask.getMqExchange();
+                String routingkey = xcTask.getMqRoutingkey();
+
+                this.xcTaskService.publish(xcTask, exchange, routingkey);
+                log.info("===发送了mq消息===ing=========================");
+            }
+        }
 
         log.info("===选课mq消息发送===END===");
     }
