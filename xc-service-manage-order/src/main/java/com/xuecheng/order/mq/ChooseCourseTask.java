@@ -19,7 +19,7 @@ public class ChooseCourseTask {
 //    @Scheduled(fixedDelay = 3000) // 在任务结束后3秒后执行下一次调度
 //    @Scheduled(cron = "0/3 * * * * *") // 每隔3秒去执行
     public void test01() {
-        log.info("===选课mq消息发送===START===");
+        log.info("===选课mq消息发送===START1===");
 
         try {
             Thread.sleep(5000L);
@@ -27,6 +27,21 @@ public class ChooseCourseTask {
             e.printStackTrace();
         }
 
-        log.info("===选课mq消息发送===END===");
+        log.info("===选课mq消息发送===END1===");
+    }
+
+    @Scheduled(fixedRate = 3000) // 在任务开始后3秒执行下一次调度
+//    @Scheduled(fixedDelay = 3000) // 在任务结束后3秒后执行下一次调度
+//    @Scheduled(cron = "0/3 * * * * *") // 每隔3秒去执行
+    public void test02() {
+        log.info("===选课mq消息发送===START2===");
+
+        try {
+            Thread.sleep(5000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        log.info("===选课mq消息发送===END2===");
     }
 }
