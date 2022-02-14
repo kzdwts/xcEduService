@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -70,6 +71,21 @@ public class XcTaskServiceImpl implements XcTaskService {
             one.setUpdateTime(new Date());
             this.xcTaskRepository.save(one);
         }
+    }
+
+    /**
+     * 获取任务（乐观锁：更新成功即获取到任务）
+     *
+     * @param taskId  {@link String} 任务id
+     * @param version {@link Integer} 版本号
+     * @return {@link int}
+     * @author Kang Yong
+     * @date 2022/2/14
+     */
+    @Transactional
+    @Override
+    public int getTask(String taskId, Integer version) {
+        return this.xcTaskRepository.updateTaskVersion(taskId, version);
     }
 
 }

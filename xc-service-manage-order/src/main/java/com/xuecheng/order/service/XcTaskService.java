@@ -35,4 +35,15 @@ public interface XcTaskService {
      * @date 2022/2/13
      */
     void publish(XcTask xcTask, String ex, String routingKey);
+
+    /**
+     * 获取任务（乐观锁：更新成功即获取到任务）
+     *
+     * @param taskId  {@link String} 任务id
+     * @param version {@link Integer} 版本号
+     * @return {@link int}
+     * @author Kang Yong
+     * @date 2022/2/14
+     */
+    int getTask(String taskId, Integer version);
 }

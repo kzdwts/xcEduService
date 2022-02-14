@@ -44,4 +44,18 @@ public interface XcTaskRepository extends JpaRepository<XcTask, String> {
     @Modifying
     @Query("update XcTask xt set xt.updateTime=:updateTime where xt.id=:taskId")
     int updateTaskTime(@Param("taskId") String taskId, @Param("updateTime") Date updateTIme);
+
+    /**
+     * 获取任务（乐观锁：更新成功即获取到任务）
+     *
+     * @param taskId  {@link String} 任务id
+     * @param version {@link Integer} 版本号
+     * @return {@link int}
+     * @author Kang Yong
+     * @date 2022/2/14
+     */
+    @Modifying
+    @Query("update XcTask xt set xt.version=:version+1 where xt.id=:taskId and xt.version=:version")
+    int updateTaskVersion(@Param("taskId") String taskId, @Param("version") Integer version);
+
 }

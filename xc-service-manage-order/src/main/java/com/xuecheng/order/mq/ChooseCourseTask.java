@@ -1,5 +1,6 @@
 package com.xuecheng.order.mq;
 
+import com.alibaba.fastjson.JSON;
 import com.xuecheng.framework.domain.task.XcTask;
 import com.xuecheng.order.service.XcTaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,8 @@ public class ChooseCourseTask {
      * @author Kang Yong
      * @date `2022/2/13`
      */
-    @Scheduled(cron = "0/3 * * * * *")
+//    @Scheduled(cron = "0/3 * * * * *")
+    @Scheduled(cron = "0 3 * * * *")
     public void sendChooseCourseTask() {
         log.info("===选课mq消息发送===START===");
 
@@ -48,11 +50,13 @@ public class ChooseCourseTask {
 //        xcTaskList.forEach(System.out::println);
         if (!CollectionUtils.isEmpty(xcTaskList)) {
             for (XcTask xcTask : xcTaskList) {
-                String exchange = xcTask.getMqExchange();
-                String routingkey = xcTask.getMqRoutingkey();
-
-                this.xcTaskService.publish(xcTask, exchange, routingkey);
-                log.info("===发送了mq消息===ing=========================");
+                // 获取任务
+                if (this.xcTaskService.getTask(xcTask.getId(), xcTask.getVersion()) > 0) {
+                    String exchange = xcTask.getMqExchange();
+                    String routingkey = xcTask.getMqRoutingkey();
+                    this.xcTaskService.publish(xcTask, exchange, routingkey);
+                    log.info("===发送了mq消息===ing===:{}", JSON.toJSONString(xcTask));
+                }
             }
         }
 
