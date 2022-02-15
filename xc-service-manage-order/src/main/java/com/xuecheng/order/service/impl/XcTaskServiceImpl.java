@@ -1,9 +1,12 @@
 package com.xuecheng.order.service.impl;
 
 import com.xuecheng.framework.domain.task.XcTask;
+import com.xuecheng.framework.domain.task.XcTaskHis;
+import com.xuecheng.order.dao.XcTaskHisRepository;
 import com.xuecheng.order.dao.XcTaskRepository;
 import com.xuecheng.order.service.XcTaskService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +30,9 @@ public class XcTaskServiceImpl implements XcTaskService {
 
     @Autowired
     private XcTaskRepository xcTaskRepository;
+
+    @Autowired
+    private XcTaskHisRepository xcTaskHisRepository;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -86,6 +92,34 @@ public class XcTaskServiceImpl implements XcTaskService {
     @Override
     public int getTask(String taskId, Integer version) {
         return this.xcTaskRepository.updateTaskVersion(taskId, version);
+    }
+
+    /**
+     * 完成任务后将任务删除
+     *
+     * @param taskId {@link String}
+     * @author Kang Yong
+     * @date 2022/2/15
+     */
+    @Transactional
+    @Override
+    public void finishTask(String taskId) {
+        Optional<XcTask> taskOptional = this.xcTaskRepository.findById(taskId);
+        if (taskOptional.isPresent()) {
+            XcTask xcTask = taskOptional.get();
+            xcTask.setDeleteTime(new Date());
+
+            // 历史任务
+            XcTaskHis xcTaskHis = new XcTaskHis();
+            BeanUtils.copyProperties(xcTask, xcTaskHis);
+
+            // 保存任务记录
+            this.xcTaskHisRepository.save(xcTaskHis);
+            // 删除任务
+            this.xcTaskRepository.delete(xcTask);
+        }
+
+
     }
 
 }

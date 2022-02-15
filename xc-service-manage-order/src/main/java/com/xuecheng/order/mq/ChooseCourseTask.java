@@ -1,9 +1,14 @@
 package com.xuecheng.order.mq;
 
 import com.alibaba.fastjson.JSON;
+import com.rabbitmq.client.Channel;
 import com.xuecheng.framework.domain.task.XcTask;
+import com.xuecheng.order.config.RabbitMQConfig;
 import com.xuecheng.order.service.XcTaskService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,6 +32,25 @@ public class ChooseCourseTask {
 
     @Autowired
     private XcTaskService xcTaskService;
+
+    /**
+     * 接收完成选课任务消息
+     *
+     * @param xcTask  {@link XcTask}
+     * @param message {@link Message}
+     * @param channel {@link Channel}
+     * @author Kang Yong
+     * @date 2022/2/15
+     */
+    @RabbitListener(queues = RabbitMQConfig.XC_LEARNING_FINISHADDCHOOSECOURSE)
+    public void receiveFinishChooseCourseTask(XcTask xcTask, Message message, Channel channel) {
+        log.info("接收到选课完成消息：taskId:{}", xcTask.getId());
+        if (xcTask != null && StringUtils.isNotEmpty(xcTask.getId())) {
+            String taskId = xcTask.getId();
+            // 完成选课后 删除历史任务
+            this.xcTaskService.finishTask(taskId);
+        }
+    }
 
     /**
      * 定时发送选课任务

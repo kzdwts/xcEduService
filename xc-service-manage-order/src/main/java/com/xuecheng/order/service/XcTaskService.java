@@ -46,4 +46,13 @@ public interface XcTaskService {
      * @date 2022/2/14
      */
     int getTask(String taskId, Integer version);
+
+    /**
+     * 完成任务后将任务删除
+     *
+     * @param taskId {@link String}
+     * @author Kang Yong
+     * @date 2022/2/15
+     */
+    void finishTask(String taskId);
 }

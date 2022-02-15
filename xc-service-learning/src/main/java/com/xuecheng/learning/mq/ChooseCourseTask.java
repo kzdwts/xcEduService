@@ -70,7 +70,7 @@ public class ChooseCourseTask {
             ResponseResult addcourse = this.learningService.addcourse(userId, courseId, valid, startTime, endTime, xcTask);
             if (addcourse.isSuccess()) {
                 // 选课成功发送响应消息
-                this.rabbitTemplate.convertAndSend(RabbitMQConfig.EX_LEARNING_ADDCHOOSECOURSE, RabbitMQConfig.XC_LEARNING_FINISHADDCHOOSECOURSE_KEY, xcTask);
+                this.rabbitTemplate.convertAndSend(RabbitMQConfig.EX_LEARNING_ADDCHOOSECOURSE, RabbitMQConfig.XC_LEARNING_FINISHADDCHOOSECOURSE, xcTask);
 
                 log.info("成功发送选课成功消息，taskId:{}", taskId);
             }
