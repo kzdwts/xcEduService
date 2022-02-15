@@ -35,7 +35,7 @@ public class ChooseCourseTask {
      * @date `2022/2/13`
      */
 //    @Scheduled(cron = "0/3 * * * * *")
-    @Scheduled(cron = "0 3 * * * *")
+    @Scheduled(cron = "0 0/1 * * * *")
     public void sendChooseCourseTask() {
         log.info("===选课mq消息发送===START===");
 

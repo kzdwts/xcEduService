@@ -1,6 +1,10 @@
 package com.xuecheng.learning.service;
 
 import com.xuecheng.framework.domain.learning.response.GetMediaResult;
+import com.xuecheng.framework.domain.task.XcTask;
+import com.xuecheng.framework.model.response.ResponseResult;
+
+import java.util.Date;
 
 /**
  * 学习服务业务处理
@@ -21,4 +25,19 @@ public interface LearningService {
      * @date 2022/1/28
      */
     GetMediaResult getMedia(String courseId, String teachplanId);
+
+    /**
+     * 添加选课
+     *
+     * @param userId    {@link String} 用户id
+     * @param courseId  {@link String} 课程id
+     * @param valid     {@link String}
+     * @param startTime {@link Date} 开始时间
+     * @param endTime   {@link Date} 结束时间
+     * @param xcTask    {@link XcTask} 任务
+     * @return {@link ResponseResult}
+     * @author Kang Yong
+     * @date 2022/2/14
+     */
+    ResponseResult addcourse(String userId, String courseId, String valid, Date startTime, Date endTime, XcTask xcTask);
 }
