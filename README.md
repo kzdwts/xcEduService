@@ -38,8 +38,30 @@
     
 ## 参考文档
 
-* [百度web uploader文件上传](http://fex.baidu.com/webuploader/) 分片（断点续传）、分发 
-* [FFmpeg](https://ffmpeg.org/) FFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序
-* [Nuxt](https://nuxtjs.org/) 服务器端渲染,生成静态站点；动态生成静态页面技术
+### 后端技术栈
+
+* Spring Boot
+* Spring Cloud
+* Spring Security Oauth2
+* Spring Task
+* Spring Data Redis
+* Spring Data Mongodb
+* Spring RabbitTemplate
+* ElasticSearch
+
+### 前端技术栈
+
+* node.js
+* vue.js
+* npm/cnpm
+* webpack
+* axios
+* nuxt.js 
+  * [Nuxt](https://nuxtjs.org/) 服务器端渲染,生成静态站点；动态生成静态页面技术
+* web_uploader
+  * [百度web uploader文件上传](http://fex.baidu.com/webuploader/) 分片（断点续传）、分发 
+* HLS技术 FFmpeg
+  * [FFmpeg](https://ffmpeg.org/) FFmpeg是一套可以用来记录、转换数字音频、视频，并能将其转化为流的开源计算机程序
+
 
 
