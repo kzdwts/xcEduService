@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xc-govern-center</artifactId>
+    <description>注册中心工程</description>
 
     <dependencies>
         <!--Eureka服务的依赖-->
@@ -20,5 +21,15 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
