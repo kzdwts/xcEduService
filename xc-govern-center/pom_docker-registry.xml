@@ -16,7 +16,7 @@
         <!-- 导入Eureka服务的依赖 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -40,9 +40,9 @@
                     <imageTags>
                         <imageTag>${project.version}</imageTag>
                     </imageTags>
-                    <registryUrl>192.168.101.64:5000</registryUrl>
+                    <registryUrl>192.168.100.132:5000</registryUrl>
                     <pushImage>true</pushImage>
-                    <imageName>192.168.101.64:5000/${project.artifactId}:${project.version}</imageName>
+                    <imageName>192.168.100.132:5000/${project.artifactId}:${project.version}</imageName>
                     <!--构建镜像的配置信息-->
                     <resources>
                         <resource>
