@@ -3,6 +3,7 @@ package com.xuecheng.auth.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -14,8 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @date 2022/2/7
  * @since 1.0.0
  */
-@SpringBootTest
-@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
 public class PasswordTest {
 
     @Test
@@ -31,5 +32,17 @@ public class PasswordTest {
             boolean b = passwordEncoder.matches(password, hashPass);
             System.out.println(b);
         }
+    }
+
+    @Test
+    public void testPassword() {
+        for (int i = 0; i < 10; i++) {
+            String pwd = BCrypt.hashpw("111111", BCrypt.gensalt());
+            System.out.println("密码：" + pwd);
+
+            boolean checkpw = BCrypt.checkpw("111111", pwd);
+            System.out.println(checkpw);
+        }
+        System.out.println("===GAME===OVER===");
     }
 }
